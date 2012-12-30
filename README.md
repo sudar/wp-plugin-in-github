@@ -6,6 +6,17 @@ Collection of shell scripts that I am using to manage and deploy WordPress Plugi
 - clone-from-svn-to-git.sh - Use this script to clone your WordPress Plugins from SVN into git/github
 - deploy-plugin.sh - Use this script to push your WordPress Plugin updates to SVN from gi/github
 
+TODO
+-------------
+
+Here is the list of things that I want to implement. Pull requests are welcome :)
+
+- Better documentation
+- In the deploy script, add support for assests/ folder
+- In the deploy script, checkout only the trunk/ for the Plugin from svn
+- Find ways to speed up things in the clone script
+- Add batch support in the clone script
+
 Contribution
 -------------
 
