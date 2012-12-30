@@ -22,7 +22,7 @@ CURRENTDIR=`pwd`
 while [ $# -gt 0 ]
 do
     case "$1" in
-        -p)  PLUGINSLUG="$2"; shift;;
+        -p)  PLUGINSLUG="$2"; MAINFILE="$PLUGINSLUG.php"; shift;;
         -u)  SVNUSER="$2"; shift;;
         -f)  MAINFILE="$2"; shift;;
         -t)  TMPDIR="$2"; shift;;
@@ -36,7 +36,7 @@ do
 done
 
 # git config
-GITPATH="$CURRENTDIR/" # this file should be in the base of your git repository
+GITPATH="$CURRENTDIR" # this file should be in the base of your git repository
 
 # svn config
 SVNPATH="$TMPDIR/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
@@ -51,6 +51,9 @@ echo "Preparing to deploy WordPress Plugin"
 echo 
 echo ".........................................."
 echo 
+
+# Pull the latest changes from origin, to make sure we are using the latest code
+git pull origin master
 
 # Check version in readme.txt/md is the same as plugin file
 # if readme.md file is found, then use it
@@ -98,6 +101,7 @@ echo
 echo "Creating local copy of SVN repo ..."
 svn co $SVNURL $SVNPATH
 
+# TODO: Don't checkout trunk
 echo "Exporting the HEAD of master from git to the trunk of SVN"
 git checkout-index -a -f --prefix=$SVNPATH/trunk/
 
