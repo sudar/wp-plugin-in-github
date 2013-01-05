@@ -34,15 +34,15 @@ done
 
 # Get the first revision number when this Plugin was checked in first
 REVISION=$(svn log -r 1:HEAD --limit 1 http://plugins.svn.wordpress.org/$PLUGIN_NAME | awk 'NR==2{print $1;exit;}')
-echo ">>>Plugin was first checked in at revision: $REVISION"
+echo "[Info] Plugin was first checked in at revision: $REVISION"
 
 git svn clone -s -$REVISION -A $AUTHORS_FILE --no-minimize-url --username=$SVN_USERNAME http://plugins.svn.wordpress.org/$PLUGIN_NAME
-echo ">>>Repo cloned. Let's fetch it"
+echo "[Info] Repo cloned. Let's fetch it"
 
 cd $PLUGIN_NAME
 git svn fetch
 git rebase trunk
-echo ">>>Fetched the content from svn. Adding repo to github"
+echo "[Info] Fetched the content from svn. Adding repo to github"
 
 git remote add origin $GITHUB_REPO
 
@@ -51,4 +51,4 @@ git ci -am "Renamed readme.txt to readme.md, so that github can parse it"
 
 git push -u origin master
 
-echo ">>>Done"
+echo "[Info] Done"
