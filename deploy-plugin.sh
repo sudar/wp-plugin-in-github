@@ -99,20 +99,18 @@ git push origin master --tags
 
 echo 
 echo "[Info] Creating local copy of SVN repo ..."
-svn co $SVNURL $SVNPATH
+svn co $SVNURL/trunk $SVNPATH
 
-# TODO: Don't checkout trunk
 echo "[Info] Exporting the HEAD of master from git to the trunk of SVN"
-git checkout-index -a -f --prefix=$SVNPATH/trunk/
+git checkout-index -a -f --prefix=$SVNPATH/
 
 echo "[Info] Ignoring github specific files and deployment script"
-svn propset svn:ignore "deploy.sh
-README.md
+svn propset svn:ignore "README.md
 .git
-.gitignore" "$SVNPATH/trunk/"
+.gitignore" "$SVNPATH"
 
 echo "[Info] Changing directory to SVN and committing to trunk"
-cd $SVNPATH/trunk/
+cd $SVNPATH
 
 # rename the .md file
 mv readme.md readme.txt
@@ -122,10 +120,7 @@ svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn a
 svn commit --username=$SVNUSER -m "$COMMITMSG"
 
 echo "[Info] Creating new SVN tag & committing it"
-cd $SVNPATH
-svn copy trunk/ tags/$NEWVERSION1/
-cd $SVNPATH/tags/$NEWVERSION1
-svn commit --username=$SVNUSER -m "Tagging version $NEWVERSION1"
+svn copy . $SVNURL/tags/$NEWVERSION1/ -m "Tagging version $NEWVERSION1"
 
 echo "[Info] Removing temporary directory $SVNPATH"
 rm -fr $SVNPATH/
