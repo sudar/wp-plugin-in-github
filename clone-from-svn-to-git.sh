@@ -13,7 +13,6 @@
 PLUGIN_NAME="posts-by-tag"
 AUTHORS_FILE="/home/sudar/Dropbox/code/wp/wp-plugin-in-github/authors.txt"
 SVN_USERNAME="sudar"
-GITHUB_REPO="git@github.com:$SVN_USERNAME/$PLUGIN_NAME.git"
 
 # lifted this code from http://www.shelldorado.com/goodcoding/cmdargs.html
 while [ $# -gt 0 ]
@@ -31,6 +30,10 @@ do
     esac
     shift
 done
+
+if [ -z "$GITHUB_REPO" ]; then
+    GITHUB_REPO="git@github.com:$SVN_USERNAME/$PLUGIN_NAME.git"
+fi
 
 # Get the first revision number when this Plugin was checked in first
 REVISION=$(svn log -r 1:HEAD --limit 1 http://plugins.svn.wordpress.org/$PLUGIN_NAME | awk 'NR==2{print $1;exit;}')
