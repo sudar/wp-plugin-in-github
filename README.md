@@ -11,12 +11,12 @@ TODO
 
 Here is the list of things that I want to implement. Pull requests are welcome :)
 
-- [] Ability to auto update and generate .pot files
-- [] Make the readme.txt <-> readme.md translation better, so that Plugin readme files appear good in github.
-- [] Better documentation
-- [] In the deploy script, add support for assets/ folder
-- [] Find ways to speed up things in the clone script
-- [] Add batch support in the clone script
+- [ ] Ability to auto update and generate .pot files
+- [ ] Make the readme.txt <-> readme.md translation better, so that Plugin readme files appear good in github.
+- [ ] Better documentation
+- [ ] In the deploy script, add support for assets/ folder
+- [ ] Find ways to speed up things in the clone script
+- [ ] Add batch support in the clone script
 - [x] In the deploy script, checkout only the trunk/ for the Plugin from svn
 
 Contribution
