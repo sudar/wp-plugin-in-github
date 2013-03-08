@@ -5,11 +5,12 @@
 #
 # License: Beerware ;)
 #
-# Make sure you have git-svn installed. In ubuntu you can do sudo apt-get install git-svn
+# Make sure you have git-svn installed. In Ubuntu you can do sudo apt-get install git-svn
 # 
 # Credit: Uses most of the code from the following places
 #       https://github.com/deanc/wordpress-plugin-git-svn
 #       https://github.com/thenbrent/multisite-user-management/blob/master/deploy.sh
+#       https://github.com/ocean90/svn2git-tools/
 
 # default configurations
 PLUGINSLUG="bulk-delete"
@@ -17,6 +18,7 @@ MAINFILE="$PLUGINSLUG.php" # this should be the name of your main php file in th
 SVNUSER="sudar" # your svn username
 TMPDIR="/tmp"
 CURRENTDIR=`pwd`
+COMMITMSG_FILE='wp-plugin-commit-msg.tmp'
 
 # lifted this code from http://www.shelldorado.com/goodcoding/cmdargs.html
 while [ $# -gt 0 ]
@@ -80,19 +82,23 @@ if git show-ref --tags --quiet --verify -- "refs/tags/$NEWVERSION1"
 		echo "[Info] Git version does not exist. Let's proceed..."
 fi
 
-echo -e "Enter a commit message for this new version: \c"
-read COMMITMSG
-
 # if unsaved changes are there the commit them.
 if ! git diff-index --quiet HEAD --; then
     echo "[Info] Unsaved changes found. Committing them to git"
+    echo -e "Enter a commit message for unsaved changes: \c"
+    read COMMITMSG
+
     git commit -am "$COMMITMSG"
 fi
+
+# Retrieve commit messages till the last tag
+git log `git describe --tags --abbrev=0`..HEAD --oneline > $TMPDIR/$COMMITMSG_FILE
 
 # Tag new version 
 echo "[Info] Tagging new version in git with $NEWVERSION1"
 git tag -a "$NEWVERSION1" -m "Tagging version $NEWVERSION1"
 
+# Push the latest version to github
 echo "[Info] Pushing latest commit to origin, with tags"
 git push origin master
 git push origin master --tags
@@ -117,6 +123,10 @@ mv readme.md readme.txt
 
 # Add all new files that are not set to be ignored
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
+
+# Get aggregated commit msg
+COMMITMSG=`cat $TMPDIR/$COMMITMSG_FILE`
+rm $TMPDIR/$COMMITMSG_FILE
 svn commit --username=$SVNUSER -m "$COMMITMSG"
 
 echo "[Info] Creating new SVN tag & committing it"
