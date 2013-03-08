@@ -124,8 +124,8 @@ mv readme.md readme.txt
 # Add all new files that are not set to be ignored
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
 
-# Get aggregated commit msg
-COMMITMSG=`cat $TMPDIR/$COMMITMSG_FILE`
+# Get aggregated commit msg and add comma in between them
+COMMITMSG=`cut -d' ' -f2- $TMPDIR/$COMMITMSG_FILE | sed -e '$ ! s/$/,/'`
 rm $TMPDIR/$COMMITMSG_FILE
 svn commit --username=$SVNUSER -m "$COMMITMSG"
 
