@@ -3,6 +3,8 @@ wp-plugin-in-gitbub
 
 Collection of shell scripts that I am using to manage and deploy WordPress Plugins from github into svn
 
+Make sure you have `git-svn` installed. In Ubuntu you can do `sudo apt-get install git-svn`
+
 - clone-from-svn-to-git.sh - Use this script to clone your WordPress Plugins from SVN into git/github
 - deploy-plugin.sh - Use this script to push your WordPress Plugin updates to SVN from gi/github
 
@@ -14,9 +16,9 @@ Here is the list of things that I want to implement. Pull requests are welcome :
 - [ ] Ability to auto update and generate .pot files
 - [ ] Make the readme.txt <-> readme.md translation better, so that Plugin readme files appear good in github.
 - [ ] Better documentation
-- [ ] In the deploy script, add support for assets/ folder
 - [ ] Find ways to speed up things in the clone script
 - [ ] Add batch support in the clone script
+- [x] In the deploy script, add support for assets/ folder
 - [x] In the deploy script, checkout only the trunk/ for the Plugin from svn
 
 Contribution

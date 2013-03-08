@@ -15,6 +15,7 @@
 # default configurations
 PLUGINSLUG="bulk-delete"
 MAINFILE="$PLUGINSLUG.php" # this should be the name of your main php file in the WordPress Plugin
+ASSETS_DIR="assets-wp-repo" # the name of the assets directory that you are using
 SVNUSER="sudar" # your svn username
 TMPDIR="/tmp"
 CURRENTDIR=`pwd`
@@ -27,10 +28,11 @@ do
         -p)  PLUGINSLUG="$2"; MAINFILE="$PLUGINSLUG.php"; shift;;
         -u)  SVNUSER="$2"; shift;;
         -f)  MAINFILE="$2"; shift;;
+        -a)  ASSETS_DIR="$2"; shift;;
         -t)  TMPDIR="$2"; shift;;
         -*)
             echo >&2 \
-            "usage: $0 [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-t tmp directory]"
+            "usage: $0 [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory]"
             exit 1;;
         *)  break;;	# terminate while loop
     esac
@@ -42,6 +44,7 @@ GITPATH="$CURRENTDIR" # this file should be in the base of your git repository
 
 # svn config
 SVNPATH="$TMPDIR/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
+SVNPATH_ASSETS="$TMPDIR/$PLUGINSLUG-assets" # path to a temp assets directory.
 SVNURL="http://plugins.svn.wordpress.org/$PLUGINSLUG/" # Remote SVN repo on wordpress.org, with no trailing slash
 
 cd $GITPATH
@@ -103,6 +106,41 @@ echo "[Info] Pushing latest commit to origin, with tags"
 git push origin master
 git push origin master --tags
 
+# Process /assets directory
+if [ -d $GITPATH/$ASSETS_DIR ]
+	then
+        echo "[Info] Assets directory found. Processing it."
+		if svn checkout $SVNURL/assets $SVNPATH_ASSETS; then
+		    echo "[Info] Assets directory is not found in SVN. Creating it."
+		    # /assets directory is not found in SVN, so let's create it.
+		    # Create the assets directory and check-in. 
+		    # I am doing this for the first time, so that we don't have to checkout the entire Plugin directory, every time we run this script.
+		    # Since it takes lot of time, especially if the Plugin has lot of tags
+            svn checkout $SVNURL $TMPDIR
+            cd $TMPDIR/$PLUGINSLUG
+            mkdir assets
+            svn add assets
+            svn commit -m "Created the assets directory in SVN"
+            rm -rf $TMPDIR/$PLUGINSLUG
+            svn checkout $SVNURL/assets $SVNPATH_ASSETS
+        fi
+
+		cp $GITPATH/$ASSETS_DIR/* $SVNPATH_ASSETS # copy assets
+		cd $SVNPATH_ASSETS # Switch to assets directory
+		svn status | grep "^?\|^M" > /dev/null 2>&1 # Check if new or updated assets exists
+		if [ $? -eq 0 ]
+			then
+				svn status | grep "^?" | awk '{print $2}' | xargs svn add # Add new assets
+				svn commit --username=$SVNUSER -m "Updated assets"
+				echo "[Info] Assets committed to SVN."
+				rm -rf $SVNPATH_ASSETS
+			else
+				echo "[Info] Contents of Assets directory unchanged. Ignoring it."
+		fi
+	else
+		echo "[Info] No assets directory found."
+fi
+
 echo 
 echo "[Info] Creating local copy of SVN repo ..."
 svn co $SVNURL/trunk $SVNPATH
@@ -118,8 +156,15 @@ svn propset svn:ignore "README.md
 echo "[Info] Changing directory to SVN and committing to trunk"
 cd $SVNPATH
 
+# remove assets directory if found
+if [ -d $ASSETS_DIR ]; then
+    rm -rf $ASSETS_DIR
+fi
+
 # rename the .md file
 mv readme.md readme.txt
+
+# TODO: Convert markdown in readme.txt file to normal format
 
 # Add all new files that are not set to be ignored
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
