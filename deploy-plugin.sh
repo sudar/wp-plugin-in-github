@@ -21,6 +21,14 @@ TMPDIR="/tmp"
 CURRENTDIR=`pwd`
 COMMITMSG_FILE='wp-plugin-commit-msg.tmp'
 
+# Get the directory in which this shell script is present
+cd $(dirname "${0}") > /dev/null
+SCRIPT_DIR=$(pwd -L)
+cd - > /dev/null
+
+# Readme converter 
+README_CONVERTOR=$SCRIPT_DIR/readme-convertor.sh
+
 # lifted this code from http://www.shelldorado.com/goodcoding/cmdargs.html
 while [ $# -gt 0 ]
 do
@@ -161,10 +169,10 @@ if [ -d $ASSETS_DIR ]; then
     rm -rf $ASSETS_DIR
 fi
 
-# rename the .md file
-mv readme.md readme.txt
+# Convert markdown in readme.txt file to github markdown format
+sh $README_CONVERTOR readme.md readme.txt to-wp
 
-# TODO: Convert markdown in readme.txt file to normal format
+# TODO: Generate .pot files as well
 
 # Add all new files that are not set to be ignored
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
