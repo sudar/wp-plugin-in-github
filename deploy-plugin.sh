@@ -71,13 +71,14 @@ git pull origin master
 # Check version in readme.txt/md is the same as plugin file
 # if readme.md file is found, then use it
 if [ -f "$GITPATH/readme.md" ]; then
-    NEWVERSION1=`grep "^Stable tag:" $GITPATH/readme.md | tr -d '\015' |awk -F' ' '{print $NF}'`
+    NEWVERSION1=`awk -F' ' '/Stable tag:/{print $NF}' $GITPATH/readme.md | tr -d '\r'`
 else
-    NEWVERSION1=`grep "^Stable tag:" $GITPATH/readme.txt | tr -d '\015' |awk -F' ' '{print $NF}'`
+    NEWVERSION1=`awk -F' ' '/Stable tag:/{print $NF}' $GITPATH/readme.txt | tr -d '\r'`
 fi
 
 echo "[Info] readme.txt/md version: $NEWVERSION1"
 
+NEWVERSION2=`awk -F' ' '/^Version:/{print $NF}' $GITPATH/$MAINFILE | tr -d '\r'`
 NEWVERSION2=`grep "^Version:" $GITPATH/$MAINFILE | tr -d '\015' |awk -F' ' '{print $NF}'`
 echo "[Info] $MAINFILE version: $NEWVERSION2"
 
