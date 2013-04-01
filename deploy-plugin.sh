@@ -171,7 +171,7 @@ if [ -d $ASSETS_DIR ]; then
 fi
 
 # Convert markdown in readme.txt file to github markdown format
-sh $README_CONVERTOR readme.md readme.txt to-wp
+$README_CONVERTOR readme.md readme.txt to-wp
 
 # TODO: Generate .pot files as well
 
