@@ -1,7 +1,7 @@
 wp-plugin-in-gitbub
 ===================
 
-Collection of shell scripts that I am using to manage and deploy WordPress Plugins from github into svn
+Collection of bash scripts that I am using to manage and deploy my WordPress Plugins from github into WordPress official repository svn.
 
 Make sure you have `git-svn` installed. In Ubuntu you can do `sudo apt-get install git-svn`
 
@@ -24,6 +24,7 @@ Here is the list of things that I want to implement. Pull requests are welcome :
 
 Contribution
 -------------
+All contributions (even documentations) are welcome :)
 
 If you would like to contribute to this project, then just fork it in github and send a pull request. 
 
