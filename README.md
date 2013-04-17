@@ -15,6 +15,7 @@ TODO
 Here is the list of things that I want to implement. Pull requests are welcome :)
 
 - [ ] Ability to auto update and generate .pot files
+- [ ] Ability to automatically show screenshots
 - [ ] Better documentation
 - [ ] Find ways to speed up things in the clone script
 - [ ] Add batch support in the clone script
