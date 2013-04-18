@@ -9,6 +9,14 @@ Make sure you have `git-svn` installed. In Ubuntu you can do `sudo apt-get insta
 - deploy-plugin.sh - Use this script to push your WordPress Plugin updates to SVN from gi/github
 - readme-convertor.sh - Use this script to convert readme files between Github markdown and WordPress repo markdown format
 
+Contribution
+-------------
+All contributions (even documentations) are welcome :)
+
+If you would like to contribute to this project, then just fork it in github and send a pull request. 
+
+If you are looking for ideas, then you can start with the below TODO list.
+
 TODO
 -------------
 
@@ -23,12 +31,6 @@ Here is the list of things that I want to implement. Pull requests are welcome :
 - [x] In the deploy script, checkout only the trunk/ for the Plugin from svn
 - [x] Make the readme.txt <-> readme.md translation better, so that Plugin readme files appear good in github.
 
-Contribution
--------------
-All contributions (even documentations) are welcome :)
-
-If you would like to contribute to this project, then just fork it in github and send a pull request. 
-
 License
 -------
 
@@ -37,5 +39,3 @@ The source code and the config files are released under "THE BEER-WARE" license.
 I would, however, consider it a great courtesy if you could email me and tell me about your project and how this code was used, just for my own continued personal gratification :)
 
 You can also find other ways to [make me happy](http://sudarmuthu.com/if-you-wanna-thank-me), if you liked this project ;)
-
-

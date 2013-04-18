@@ -158,7 +158,8 @@ echo "[Info] Exporting the HEAD of master from git to the trunk of SVN"
 git checkout-index -a -f --prefix=$SVNPATH/
 
 echo "[Info] Ignoring github specific files and deployment script"
-svn propset svn:ignore "README.md
+# There is no simple way to exclude readme.md. http://stackoverflow.com/q/16066485/24949
+svn propset svn:ignore "[Rr][Ee][Aa][Dd][Mm][Ee].[Mm][Dd]
 .git
 .gitignore" "$SVNPATH"
 
@@ -174,6 +175,7 @@ fi
 $README_CONVERTOR readme.md readme.txt to-wp
 
 # TODO: Generate .pot files as well
+# TODO: Handle screenshots as well
 
 # Add all new files that are not set to be ignored
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
@@ -189,4 +191,4 @@ svn copy . $SVNURL/tags/$NEWVERSION1/ -m "Tagging version $NEWVERSION1"
 echo "[Info] Removing temporary directory $SVNPATH"
 rm -fr $SVNPATH/
 
-echo "*** Done ***"
+echo "[Info] Done"
