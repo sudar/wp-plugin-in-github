@@ -1,12 +1,21 @@
 #!/bin/bash
 
-# Convert files between WordPress Plugin readme and Github markdown format
+################################################################################
+# Convert readme files between WordPress Plugin readme and Github markdown format
+# This script is used by the deploy-plugin.sh script
+#
 # Author: Sudar <http://sudarmuthu.com>
 #
 # License: Beerware ;)
 #
+# Usage:
+# ./path/to/readme-convertor.sh [from-file] [to-file] [format to-wp|from-wp]
+#
+# Refer to the README.md file for information about the different options
+#
 # Credit: Uses most of the code from the following places
 #       https://github.com/ocean90/svn2git-tools/
+################################################################################
 
 # wrapper for sed
 _sed() {

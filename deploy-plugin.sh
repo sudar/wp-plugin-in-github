@@ -1,16 +1,25 @@
 #!/bin/bash
 
+################################################################################
 # Deploy WordPress Plugin to svn from Github
 # Author: Sudar <http://sudarmuthu.com>
 #
 # License: Beerware ;)
 #
-# Make sure you have git-svn installed. In Ubuntu you can do sudo apt-get install git-svn
+# You should invoke this script from the Plugin directory, but you don't need 
+# to copy this script to every Plugin directory. You can just have one copy 
+# somewhere and then invoke it from multiple Plugin directories.
+#
+# Usage:
+#  ./path/to/deply-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory]
+#
+# Refer to the README.md file for information about the different options
 # 
 # Credit: Uses most of the code from the following places
 #       https://github.com/deanc/wordpress-plugin-git-svn
 #       https://github.com/thenbrent/multisite-user-management/blob/master/deploy.sh
 #       https://github.com/ocean90/svn2git-tools/
+################################################################################
 
 # default configurations
 PLUGINSLUG="bulk-delete"

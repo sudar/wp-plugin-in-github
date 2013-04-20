@@ -1,11 +1,18 @@
 #!/bin/bash
 
+################################################################################
 # Clone the svn Plugin repo into github
 # Author: Sudar <http://sudarmuthu.com>
 #
 # License: Beerware ;)
 #
+# Usage:
+# ./path/to/deply-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory]
+#
+# Refer to the README.md file for information about the different options
+#
 # Make sure you have git-svn installed. In ubuntu you can do sudo apt-get install git-svn
+################################################################################
 
 # TODO: Add support for giving a list of Plugin names
 
