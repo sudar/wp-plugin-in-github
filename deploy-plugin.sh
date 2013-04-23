@@ -44,7 +44,7 @@ do
     case "$1" in
         -p)  PLUGINSLUG="$2"; MAINFILE="$PLUGINSLUG.php"; shift;;
         -u)  SVNUSER="$2"; shift;;
-        -f)  MAINFILE="$2"; shift;;
+        -m)  MAINFILE="$2"; shift;;
         -a)  ASSETS_DIR="$2"; shift;;
         -t)  TMPDIR="$2"; shift;;
         -*)

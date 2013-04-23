@@ -7,7 +7,7 @@
 # License: Beerware ;)
 #
 # Usage:
-# ./path/to/deply-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory]
+# ./path/to/clone-from-svn-to-git.sh [-p plugin-name] [-a authors-file] [-u svn-username] [-g github-repo-url]`
 #
 # Refer to the README.md file for information about the different options
 #
