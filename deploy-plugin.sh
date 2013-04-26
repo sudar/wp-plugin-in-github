@@ -11,7 +11,7 @@
 # somewhere and then invoke it from multiple Plugin directories.
 #
 # Usage:
-#  ./path/to/deply-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory]
+#  ./path/to/deply-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n]
 #
 # Refer to the README.md file for information about the different options
 # 
@@ -23,17 +23,21 @@
 
 # default configurations
 PLUGINSLUG="bulk-delete"
-MAINFILE="$PLUGINSLUG.php" # this should be the name of your main php file in the WordPress Plugin
-ASSETS_DIR="assets-wp-repo" # the name of the assets directory that you are using
-SVNUSER="sudar" # your svn username
-TMPDIR="/tmp"
+MAINFILE="$PLUGINSLUG.php"               # this should be the name of your main php file in the WordPress Plugin
+ASSETS_DIR="assets-wp-repo"              # the name of the assets directory that you are using
+SVNUSER="sudar"                          # your svn username
+TMPDIR="/tmp"                            # temp directory path
 CURRENTDIR=`pwd`
-COMMITMSG_FILE='wp-plugin-commit-msg.tmp'
+COMMIT_MSG_FILE='wp-plugin-commit-msg.tmp'
+DEFAULT_POT_COMMIT_MSG="Regenerated pot file for translation" # Default commit msg after generating a new pot file
 
 # Get the directory in which this shell script is present
 cd $(dirname "${0}") > /dev/null
 SCRIPT_DIR=$(pwd -L)
 cd - > /dev/null
+
+# WordPress i18n path. You can check it out from http://i18n.svn.wordpress.org/tools/trunk/
+I18N_PATH=$SCRIPT_DIR/../i18n
 
 # Readme converter 
 README_CONVERTOR=$SCRIPT_DIR/readme-convertor.sh
@@ -46,10 +50,11 @@ do
         -u)  SVNUSER="$2"; shift;;
         -m)  MAINFILE="$2"; shift;;
         -a)  ASSETS_DIR="$2"; shift;;
+        -i)  I18N_PATH="$2"; shift;;
         -t)  TMPDIR="$2"; shift;;
         -*)
             echo >&2 \
-            "usage: $0 [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory]"
+            "usage: $0 [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n]"
             exit 1;;
         *)  break;;	# terminate while loop
     esac
@@ -57,12 +62,12 @@ do
 done
 
 # git config
-GITPATH="$CURRENTDIR" # this file should be in the base of your git repository
+GITPATH="$CURRENTDIR"
 
 # svn config
 SVNPATH="$TMPDIR/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
 SVNPATH_ASSETS="$TMPDIR/$PLUGINSLUG-assets" # path to a temp assets directory.
-SVNURL="http://plugins.svn.wordpress.org/$PLUGINSLUG/" # Remote SVN repo on wordpress.org, with no trailing slash
+SVNURL="http://plugins.svn.wordpress.org/$PLUGINSLUG/" # Remote SVN repo on wordpress.org
 
 cd $GITPATH
 
@@ -80,15 +85,14 @@ git pull origin master
 # Check version in readme.txt/md is the same as plugin file
 # if readme.md file is found, then use it
 if [ -f "$GITPATH/readme.md" ]; then
-    NEWVERSION1=`awk -F' ' '/Stable tag:/{print $NF}' $GITPATH/readme.md | tr -d '\r'`
+    NEWVERSION1=`awk -F' ' '/Stable tag:/{print $3}' $GITPATH/readme.md | tr -d '\r '`
 else
-    NEWVERSION1=`awk -F' ' '/Stable tag:/{print $NF}' $GITPATH/readme.txt | tr -d '\r'`
+    NEWVERSION1=`awk -F' ' '/Stable tag:/{print $3}' $GITPATH/readme.txt | tr -d '\r '`
 fi
 
 echo "[Info] readme.txt/md version: $NEWVERSION1"
 
 NEWVERSION2=`awk -F' ' '/^Version:/{print $NF}' $GITPATH/$MAINFILE | tr -d '\r'`
-NEWVERSION2=`grep "^Version:" $GITPATH/$MAINFILE | tr -d '\015' |awk -F' ' '{print $NF}'`
 echo "[Info] $MAINFILE version: $NEWVERSION2"
 
 if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Version in readme.txt/md & $MAINFILE don't match. Exiting...."; exit 1; fi
@@ -107,14 +111,55 @@ fi
 if ! git diff-index --quiet HEAD --; then
     echo "[Info] Unsaved changes found. Committing them to git"
     echo -e "Enter a commit message for unsaved changes: \c"
-    read COMMITMSG
+    read COMMIT_MSG
 
-    git commit -am "$COMMITMSG"
+    git commit -am "$COMMIT_MSG"
 fi
 
 # Retrieve commit messages till the last tag
-git log `git describe --tags --abbrev=0`..HEAD --oneline > $TMPDIR/$COMMITMSG_FILE
+git log `git describe --tags --abbrev=0`..HEAD --oneline > $TMPDIR/$COMMIT_MSG_FILE
 
+echo 
+# the text domain used for translation
+TEXTDOMAIN=`awk -F' ' '/^Text Domain:/{print $NF}' $GITPATH/$MAINFILE | tr -d '\r'`
+if [ -z $TEXTDOMAIN ]; then
+    TEXTDOMAIN="$PLUGINSLUG"                 
+    echo "[Info] Text Domain not found in $MAINFILE. Assuming the '$PLUGINSLUG' as Text Domain"
+else
+    echo "[Info] Text Domain found in $MAINFILE: $TEXTDOMAIN"
+fi
+
+# The path the pot file has to be stored
+POT_FILEPATH=`awk -F' ' '/^Domain Path:/{print $NF}' $GITPATH/$MAINFILE | tr -d '\r'`
+if [ -z $POT_FILEPATH ]; then
+    POT_FILEPATH="languages/"                
+    echo "[Info] Text Domain path not found in $MAINFILE. Assuming the '$POT_FILEPATH' as path"
+else
+    echo "[Info] Text Domain path found in $MAINFILE: '$POT_FILEPATH'"
+fi
+
+# Add textdomain to all php files
+echo "[Info] Adding text domain to all PHP files"
+find . -iname "*.php" -type f -print0 | xargs -0 php $I18N_PATH/add-textdomain.php -i $TEXTDOMAIN
+
+# Regenerate pot file
+echo "[Info] Regenerating pot file"
+php $I18N_PATH/makepot.php wp-plugin . ${POT_FILEPATH}${TEXTDOMAIN}.pot
+
+# commit .pot file and textdomain changes
+if ! git diff-index --quiet HEAD --; then
+    echo "[Info] Textdomain/.pot file changes found. Committing them to git"
+    echo -e "Enter a commit message (Default: $DEFAULT_POT_COMMIT_MSG) : \c"
+    read POT_COMMIT_MSG
+
+    if [ -z $POT_COMMIT_MSG ]; then
+        POT_COMMIT_MSG=$DEFAULT_POT_COMMIT_MSG
+    fi
+
+    git commit -am "$POT_COMMIT_MSG"
+fi
+
+echo 
 # Tag new version 
 echo "[Info] Tagging new version in git with $NEWVERSION1"
 git tag -a "$NEWVERSION1" -m "Tagging version $NEWVERSION1"
@@ -124,6 +169,7 @@ echo "[Info] Pushing latest commit to origin, with tags"
 git push origin master
 git push origin master --tags
 
+echo 
 # Process /assets directory
 if [ -d $GITPATH/$ASSETS_DIR ]
 	then
@@ -181,18 +227,18 @@ if [ -d $ASSETS_DIR ]; then
 fi
 
 # Convert markdown in readme.txt file to github markdown format
+echo "[Info] Convert readme file into WordPress format"
 $README_CONVERTOR readme.md readme.txt to-wp
 
-# TODO: Generate .pot files as well
 # TODO: Handle screenshots as well
 
 # Add all new files that are not set to be ignored
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
 
 # Get aggregated commit msg and add comma in between them
-COMMITMSG=`cut -d' ' -f2- $TMPDIR/$COMMITMSG_FILE | sed -e '$ ! s/$/,/'`
-rm $TMPDIR/$COMMITMSG_FILE
-svn commit --username=$SVNUSER -m "$COMMITMSG"
+COMMIT_MSG=`cut -d' ' -f2- $TMPDIR/$COMMIT_MSG_FILE | sed -e '$ ! s/$/,/'`
+rm $TMPDIR/$COMMIT_MSG_FILE
+svn commit --username=$SVNUSER -m "$COMMIT_MSG"
 
 echo "[Info] Creating new SVN tag & committing it"
 svn copy . $SVNURL/tags/$NEWVERSION1/ -m "Tagging version $NEWVERSION1"

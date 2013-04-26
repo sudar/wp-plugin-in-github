@@ -31,7 +31,7 @@ You can use the `deploy-plugin.sh` script to deploy your Plugins to SVN repo, fr
 
 You don't need to have a copy of this script in every repo. You just need to have one copy of this script somewhere and then you can invoke it from multiple Plugin directories using the following options.
 
-`./path/to/deply-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory]`
+`./path/to/deply-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n]`
 
 The following are the different options that you can pass to this script.
 
@@ -40,6 +40,7 @@ The following are the different options that you can pass to this script.
 - `-m` - The name of the main Plugin file. By default it is `plugin-name.php`
 - `-a` - The name of the Plugin's assets directory. By default it is assumed to be `assets-wp-repo`
 - `-t` - Path to the temporary directory. By default `/tmp` is used
+- `-i` - Path to the WordPress i18n tools directory. By default `../i18n` is used. You have to checkout a local copy of the i18n tools from http://i18n.svn.wordpress.org/tools/trunk/
 
 ### Convert readme file from md to txt format and vice versa
 
@@ -68,10 +69,10 @@ TODO
 
 Here is the list of things that I want to implement. Pull requests are welcome :)
 
-- Ability to auto update and generate .pot files
 - Ability to automatically show screenshots
 - Find ways to speed up things in the clone script
 - Add batch support in the clone script
+- <del>Ability to auto update and generate .pot files</del>
 - <del>In the deploy script, add support for assets/ folder</del>
 - <del>In the deploy script, checkout only the trunk/ for the Plugin from svn</del>
 - <del>Make the readme.txt <-> readme.md translation better, so that Plugin readme files appear good in github.</del>
