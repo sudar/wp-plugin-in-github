@@ -175,12 +175,14 @@ if [ -d $GITPATH/$ASSETS_DIR ]
 	then
         echo "[Info] Assets directory found. Processing it."
 		if svn checkout $SVNURL/assets $SVNPATH_ASSETS; then
+		    echo "[Info] Assets directory is checked out to: $SVNPATH_ASSETS"
+        else
 		    echo "[Info] Assets directory is not found in SVN. Creating it."
 		    # /assets directory is not found in SVN, so let's create it.
 		    # Create the assets directory and check-in. 
 		    # I am doing this for the first time, so that we don't have to checkout the entire Plugin directory, every time we run this script.
 		    # Since it takes lot of time, especially if the Plugin has lot of tags
-            svn checkout $SVNURL $TMPDIR
+            svn checkout $SVNURL $TMPDIR/$PLUGINSLUG
             cd $TMPDIR/$PLUGINSLUG
             mkdir assets
             svn add assets
@@ -195,6 +197,7 @@ if [ -d $GITPATH/$ASSETS_DIR ]
 		if [ $? -eq 0 ]
 			then
 				svn status | grep "^?" | awk '{print $2}' | xargs svn add # Add new assets
+				# TODO: Delete files that have been removed from assets directory
 				svn commit --username=$SVNUSER -m "Updated assets"
 				echo "[Info] Assets committed to SVN."
 				rm -rf $SVNPATH_ASSETS
@@ -233,6 +236,8 @@ $README_CONVERTOR readme.md readme.txt to-wp
 # TODO: Handle screenshots as well
 
 # Add all new files that are not set to be ignored
+# TODO: Delete files from svn that have been removed 
+# TODO: This line generates a warning in Ubuntu. Need to look into it.
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
 
 # Get aggregated commit msg and add comma in between them
@@ -241,7 +246,7 @@ rm $TMPDIR/$COMMIT_MSG_FILE
 svn commit --username=$SVNUSER -m "$COMMIT_MSG"
 
 echo "[Info] Creating new SVN tag & committing it"
-svn copy . $SVNURL/tags/$NEWVERSION1/ -m "Tagging version $NEWVERSION1"
+svn copy . $SVNURL/tags/$NEWVERSION1/ -m "Tagging v$NEWVERSION1 for release"
 
 echo "[Info] Removing temporary directory $SVNPATH"
 rm -fr $SVNPATH/

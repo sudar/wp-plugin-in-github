@@ -69,6 +69,7 @@ TODO
 
 Here is the list of things that I want to implement. Pull requests are welcome :)
 
+- Delete files from svn that have been removed in the directory
 - Ability to automatically show screenshots
 - Find ways to speed up things in the clone script
 - Add batch support in the clone script
