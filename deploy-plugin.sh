@@ -204,6 +204,8 @@ if [ -d $GITPATH/$ASSETS_DIR ]
 			else
 				echo "[Info] Contents of Assets directory unchanged. Ignoring it."
 		fi
+
+        cd $GITPATH
 	else
 		echo "[Info] No assets directory found."
 fi
@@ -219,6 +221,7 @@ echo "[Info] Ignoring github specific files and deployment script"
 # There is no simple way to exclude readme.md. http://stackoverflow.com/q/16066485/24949
 svn propset svn:ignore "[Rr][Ee][Aa][Dd][Mm][Ee].[Mm][Dd]
 .git
+$ASSETS_DIR
 .gitignore" "$SVNPATH"
 
 echo "[Info] Changing directory to SVN and committing to trunk"
