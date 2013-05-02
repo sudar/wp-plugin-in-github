@@ -8,6 +8,7 @@ Make sure you have `git-svn` installed. In Ubuntu you can do `sudo apt-get insta
 - clone-from-svn-to-git.sh - Use this script to clone your WordPress Plugins from SVN into git/github
 - deploy-plugin.sh - Use this script to push your WordPress Plugin updates to SVN from gi/github
 - readme-convertor.sh - Use this script to convert readme files between Github markdown and WordPress repo markdown format
+- create-archive.sh - Use this script to create a zip archive of the Plugin
 
 Usage
 -------------
@@ -55,6 +56,17 @@ The following are the different options that you can pass to this script.
 - The third parameter specifies the format. You can use one of the following two.
     - `to-wp` - convert from Github markdown format to WordPress Plugin Readme format
     - `from-wp` - convert from WordPress Plugin Readme format to Github markdown format 
+
+### Creating a zip archive of the Plugin
+
+You can use the `create-archive.sh` script to quickly create a zip archive of the Plugin.
+
+`./path/to/create-archive.sh [-p plugin-name] [-o output-dir]`
+
+The following are the different options that you can pass to this script.
+
+- `-p` - The name of the Plugin. The script can pick it up from the current directory name
+- `-o` - Path to the output directory, where the zip file should be created
 
 Contribution
 -------------
