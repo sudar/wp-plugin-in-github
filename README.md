@@ -36,7 +36,7 @@ You don't need to have a copy of this script in every repo. You just need to hav
 
 The following are the different options that you can pass to this script.
 
-- `-p` - The name of the Plugin
+- `-p` - The name of the Plugin. The script can pick it up from the current directory name
 - `-u` - The svn username. It is same as your WordPress Plugin repo username.
 - `-m` - The name of the main Plugin file. By default it is `plugin-name.php`
 - `-a` - The name of the Plugin's assets directory. By default it is assumed to be `assets-wp-repo`
