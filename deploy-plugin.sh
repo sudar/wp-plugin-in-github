@@ -22,7 +22,7 @@
 ################################################################################
 
 # default configurations
-PLUGINSLUG=${PWD##*/}                   # The name of the Plugin. By default the directory name is used
+PLUGINSLUG=${PWD##*/}                    # The name of the Plugin. By default the directory name is used
 MAINFILE="$PLUGINSLUG.php"               # this should be the name of your main php file in the WordPress Plugin
 ASSETS_DIR="assets-wp-repo"              # the name of the assets directory that you are using
 SVNUSER="sudar"                          # your svn username
@@ -140,7 +140,7 @@ fi
 
 # Add textdomain to all php files
 echo "[Info] Adding text domain to all PHP files"
-find . -iname "*.php" -type f -print0 | xargs -0 php $I18N_PATH/add-textdomain.php -i $TEXTDOMAIN
+find . -iname "*.php" -type f -print0 | xargs -0 -n1 php $I18N_PATH/add-textdomain.php -i $TEXTDOMAIN
 
 # Regenerate pot file
 echo "[Info] Regenerating pot file"
