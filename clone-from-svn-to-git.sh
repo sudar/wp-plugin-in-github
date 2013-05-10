@@ -21,6 +21,9 @@ PLUGIN_NAME="posts-by-tag"
 AUTHORS_FILE="/home/sudar/Dropbox/code/wp/wp-plugin-in-github/authors.txt"
 SVN_USERNAME="sudar"
 
+# Readme converter 
+README_CONVERTOR=$SCRIPT_DIR/readme-convertor.sh
+
 # lifted this code from http://www.shelldorado.com/goodcoding/cmdargs.html
 while [ $# -gt 0 ]
 do
@@ -56,7 +59,10 @@ echo "[Info] Fetched the content from svn. Adding repo to github"
 
 git remote add origin $GITHUB_REPO
 
-git mv readme.txt readme.md
+# Convert markdown in readme.txt file to github markdown format
+echo "[Info] Convert readme file into WordPress format"
+$README_CONVERTOR readme.txt readme.md from-wp
+
 git ci -am "Renamed readme.txt to readme.md, so that github can parse it"
 
 git push -u origin master
