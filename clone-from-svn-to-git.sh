@@ -16,9 +16,14 @@
 
 # TODO: Add support for giving a list of Plugin names
 
+# Get the directory in which this shell script is present
+cd $(dirname "${0}") > /dev/null
+SCRIPT_DIR=$(pwd -L)
+cd - > /dev/null
+
 # default configurations
 PLUGIN_NAME="posts-by-tag"
-AUTHORS_FILE="/home/sudar/Dropbox/code/wp/wp-plugin-in-github/authors.txt"
+AUTHORS_FILE="$SCRIPT_DIR/authors.txt"
 SVN_USERNAME="sudar"
 
 # Readme converter 
