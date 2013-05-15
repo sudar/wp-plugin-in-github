@@ -246,6 +246,13 @@ svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn a
 # Get aggregated commit msg and add comma in between them
 COMMIT_MSG=`cut -d' ' -f2- $TMPDIR/$COMMIT_MSG_FILE | sed -e '$ ! s/$/,/'`
 rm $TMPDIR/$COMMIT_MSG_FILE
+
+if [ -z $COMMIT_MSG ]; then
+    echo "[Info] Couldn't automatically get commit message."
+    echo -e "Enter a commit message : \c"
+    read COMMIT_MSG
+fi
+
 svn commit --username=$SVNUSER -m "$COMMIT_MSG"
 
 echo "[Info] Creating new SVN tag & committing it"
