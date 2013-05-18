@@ -122,7 +122,7 @@ git log `git describe --tags --abbrev=0`..HEAD --oneline > $TMPDIR/$COMMIT_MSG_F
 echo 
 # the text domain used for translation
 TEXTDOMAIN=`awk -F' ' '/^Text Domain:/{print $NF}' $GITPATH/$MAINFILE | tr -d '\r'`
-if [ -z $TEXTDOMAIN ]; then
+if [ -z "$TEXTDOMAIN" ]; then
     TEXTDOMAIN="$PLUGINSLUG"                 
     echo "[Info] Text Domain not found in $MAINFILE. Assuming the '$PLUGINSLUG' as Text Domain"
 else
@@ -131,7 +131,7 @@ fi
 
 # The path the pot file has to be stored
 POT_FILEPATH=`awk -F' ' '/^Domain Path:/{print $NF}' $GITPATH/$MAINFILE | tr -d '\r'`
-if [ -z $POT_FILEPATH ]; then
+if [ -z "$POT_FILEPATH" ]; then
     POT_FILEPATH="languages/"                
     echo "[Info] Text Domain path not found in $MAINFILE. Assuming the '$POT_FILEPATH' as path"
 else
@@ -152,7 +152,7 @@ if ! git diff-index --quiet HEAD --; then
     echo -e "Enter a commit message (Default: $DEFAULT_POT_COMMIT_MSG) : \c"
     read POT_COMMIT_MSG
 
-    if [ -z $POT_COMMIT_MSG ]; then
+    if [ -z "$POT_COMMIT_MSG" ]; then
         POT_COMMIT_MSG=$DEFAULT_POT_COMMIT_MSG
     fi
 
@@ -247,7 +247,7 @@ svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn a
 COMMIT_MSG=`cut -d' ' -f2- $TMPDIR/$COMMIT_MSG_FILE | sed -e '$ ! s/$/,/'`
 rm $TMPDIR/$COMMIT_MSG_FILE
 
-if [ -z $COMMIT_MSG ]; then
+if [ -z "$COMMIT_MSG" ]; then
     echo "[Info] Couldn't automatically get commit message."
     echo -e "Enter a commit message : \c"
     read COMMIT_MSG
