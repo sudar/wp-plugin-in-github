@@ -1,5 +1,5 @@
-wp-plugin-in-gitbub
-===================
+What is this?
+=============
 
 Collection of bash scripts that I am using to manage and deploy my [WordPress Plugins](http://sudarmuthu.com/wordpress) from github into WordPress official repository svn.
 
