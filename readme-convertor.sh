@@ -55,7 +55,7 @@ markdowntowp () {
     PLUGINMETA=("Contributors" "Donate link" "Donate Link" "Tags" "Requires at least" "Tested up to" "Stable tag" "License" "License URI")
     for m in "${PLUGINMETA[@]}"
     do
-        _sed 's/^\*\*'"$m"':\*\*/'"$m"':/g' $2
+        _sed 's/^(\*\*|__)'"$m"':(\*\*|__)/'"$m"':/g' $2
     done
 
     _sed "s/###([^#]+)###/=\1=/g" $2
