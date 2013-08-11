@@ -1,2 +1,0 @@
-plugin-master = sudar<sudar@sudarmuthu.com>
-sudar = sudar <sudar@sudarmuthu.com>
