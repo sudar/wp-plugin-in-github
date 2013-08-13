@@ -11,7 +11,7 @@
 # somewhere and then invoke it from multiple Plugin directories.
 #
 # Usage:
-#  ./path/to/deply-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n]
+#  ./path/to/deploy-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n]
 #
 # Refer to the README.md file for information about the different options
 # 
