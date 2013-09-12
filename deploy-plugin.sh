@@ -200,10 +200,12 @@ if [ -d $GITPATH/$ASSETS_DIR ]
 				# TODO: Delete files that have been removed from assets directory
 				svn commit --username=$SVNUSER -m "Updated assets"
 				echo "[Info] Assets committed to SVN."
-				rm -rf $SVNPATH_ASSETS
 			else
 				echo "[Info] Contents of Assets directory unchanged. Ignoring it."
 		fi
+
+        # Let's remove the assets directory in /tmp which is not needed any more
+        rm -rf $SVNPATH_ASSETS
 
         cd $GITPATH
 	else
