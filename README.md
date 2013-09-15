@@ -68,6 +68,11 @@ The following are the different options that you can pass to this script.
 - `-p` - The name of the Plugin. The script can pick it up from the current directory name
 - `-o` - Path to the output directory, where the zip file should be created
 
+Code Quality Status
+-------------------
+
+The code is pretty stable and I currently use these script for deploying my [WordPress Plugins](http://sudarmuthu.com/wordpress) without any major issues. I would however consider the code to be of beta quality status.
+
 Contribution
 -------------
 All contributions (even documentations) are welcome :)
