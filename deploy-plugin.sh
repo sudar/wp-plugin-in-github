@@ -239,11 +239,10 @@ echo "[Info] Convert readme file into WordPress format"
 $README_CONVERTOR readme.md readme.txt to-wp
 
 # TODO: Handle screenshots as well
+# TODO: Delete files from svn that have been removed 
 
 # Add all new files that are not set to be ignored
-# TODO: Delete files from svn that have been removed 
-# TODO: This line generates a warning in Ubuntu. Need to look into it.
-svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
+svn status | grep -v "^.[ \t]*\..*" | grep "^?" && svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
 
 # Get aggregated commit msg and add comma in between them
 COMMIT_MSG=`cut -d' ' -f2- $TMPDIR/$COMMIT_MSG_FILE | sed -e '$ ! s/$/,/'`
