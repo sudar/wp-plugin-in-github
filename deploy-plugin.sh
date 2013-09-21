@@ -29,7 +29,6 @@ SVNUSER="sudar"                          # your svn username
 TMPDIR="/tmp"                            # temp directory path
 CURRENTDIR=`pwd`
 COMMIT_MSG_FILE='wp-plugin-commit-msg.tmp'
-DEFAULT_POT_COMMIT_MSG="Regenerate pot file for translation" # Default commit msg after generating a new pot file
 
 # Get the directory in which this shell script is present
 cd $(dirname "${0}") > /dev/null
@@ -147,6 +146,7 @@ echo "[Info] Regenerating pot file"
 php $I18N_PATH/makepot.php wp-plugin . ${POT_FILEPATH}${TEXTDOMAIN}.pot
 
 # commit .pot file and textdomain changes
+DEFAULT_POT_COMMIT_MSG="Regenerate pot file for v$NEWVERSION1" # Default commit msg after generating a new pot file
 if ! git diff-index --quiet HEAD --; then
     echo "[Info] Textdomain/.pot file changes found. Committing them to git"
     echo -e "Enter a commit message (Default: $DEFAULT_POT_COMMIT_MSG) : \c"
