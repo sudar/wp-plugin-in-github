@@ -25,7 +25,6 @@
 PLUGINSLUG=${PWD##*/}                    # The name of the Plugin. By default the directory name is used
 MAINFILE="$PLUGINSLUG.php"               # this should be the name of your main php file in the WordPress Plugin
 ASSETS_DIR="assets-wp-repo"              # the name of the assets directory that you are using
-SVNUSER="sudar"                          # your svn username
 TMPDIR="/tmp"                            # temp directory path
 CURRENTDIR=`pwd`
 COMMIT_MSG_FILE='wp-plugin-commit-msg.tmp'
@@ -114,10 +113,18 @@ if ! git diff-index --quiet HEAD --; then
     read COMMIT_MSG
 
     git commit -am "$COMMIT_MSG"
+# SVN username
+if [ -z "$SVNUSER" ]; then
+	echo -e "Enter your wordpress.org SVN username: \c"
+	read SVNUSER
 fi
 
 # Retrieve commit messages till the last tag
 git log `git describe --tags --abbrev=0`..HEAD --oneline > $TMPDIR/$COMMIT_MSG_FILE
+if [ -z "$SVNUSER" ]; then
+	echo "No SVN username entered. Exiting....";
+    exit 1;
+fi
 
 echo 
 # the text domain used for translation
