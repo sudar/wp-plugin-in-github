@@ -31,11 +31,58 @@ file_exists () {
     fi
 }
 
+# Handle screenshots section for WP to Markdown format
+ss_wptomd () {
+    awk '
+        BEGIN {                             # Set the field separator to a . for picking up line num
+            FS = "."
+        }
+        /^==/ {                             # If we hit a new section stop
+            flag = 0
+        }
+        NF && flag && $1 ~ /^[0-9]+$/ {     # If the line is not empty and the flag is set add text
+            print "![](screenshot-" $1 ".png)"
+            sub(/^[0-9]+. */, "")           # Remove the leading line number (no limit on fields)
+        }
+        /^== Screenshots ==/ {              # If we hit the screenshot section start
+            flag = 1
+        }
+        {                                   # Print all the lines in the file
+            print
+        }
+    ' $1 > $2
+}
+
+# Handle screenshots section for Markdown to WP format
+ss_mdtowp () {
+    awk '
+        /^##/ {                             # If we hit a new section stop
+            flag = 0
+        }
+        NF && flag && $0 ~ /^!\[\]/ {       # If the line contains a markdown image
+            total = split($0, arr, /[-.]/)
+            num = arr[total - 1]
+            next 
+        }
+        flag && num && NF > 1 {             # If we have a image number
+            print num ". " $0
+            num = 0
+            next
+        }
+        /^## Screenshots ##/ {              # If we hit the screenshot section start
+            flag = 1
+        }
+        {                                   # Print all the lines in the file
+            print
+        }
+    ' $1 > $2
+}
+
 # WP to Markdown format
 wptomarkdown () {
     file_exists $1
 
-    cp $1 $2
+    ss_wptomd $1 $2
 
     PLUGINMETA=("Contributors" "Donate link" "Donate Link" "Tags" "Requires at least" "Tested up to" "Stable tag" "License" "License URI")
     for m in "${PLUGINMETA[@]}"
@@ -52,7 +99,7 @@ wptomarkdown () {
 markdowntowp () {
     file_exists $1
 
-    cp $1 $2
+    ss_mdtowp $1 $2
 
     PLUGINMETA=("Contributors" "Donate link" "Donate Link" "Tags" "Requires at least" "Tested up to" "Stable tag" "License" "License URI")
     for m in "${PLUGINMETA[@]}"

@@ -49,7 +49,9 @@ The following are the different options that you can pass to this script.
 
 ### Convert readme file from md to txt format and vice versa
 
-You can use the `readme-converter.sh` script to convert the readme file between WordPress Plugin format and github markdown format. The `deploy-script.sh` script automatically does the conversion by using this script.
+You can use the `readme-converter.sh` script to convert the readme file between WordPress Plugin format and github markdown format. This script also handles screenshots as well.
+
+The `deploy-script.sh` script automatically does the conversion by using this script.
 
 `./path/to/readme-converter.sh [from-file] [to-file] [format to-wp|from-wp]`
 
@@ -91,9 +93,9 @@ TODO
 Here is the list of things that I want to implement. Pull requests are welcome :)
 
 - Delete files from svn that have been removed in the directory
-- Ability to automatically show screenshots
 - Find ways to speed up things in the clone script
 - Add batch support in the clone script
+- <del>Ability to automatically show screenshots</del>
 - <del>Ability to auto update and generate .pot files</del>
 - <del>In the deploy script, add support for assets/ folder</del>
 - <del>In the deploy script, checkout only the trunk/ for the Plugin from svn</del>

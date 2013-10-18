@@ -248,7 +248,6 @@ fi
 echo "[Info] Convert readme file into WordPress format"
 $README_CONVERTER readme.md readme.txt to-wp
 
-# TODO: Handle screenshots as well
 # TODO: Delete files from svn that have been removed
 
 # Add all new files that are not set to be ignored
