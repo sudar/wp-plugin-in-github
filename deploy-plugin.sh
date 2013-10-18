@@ -11,7 +11,8 @@
 # somewhere and then invoke it from multiple Plugin directories.
 #
 # Usage:
-#  ./path/to/deploy-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n]
+#  ./path/to/deploy-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file]
+#            [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n] [-h history/changelog file]
 #
 # Refer to the README.md file for information about the different options
 #
@@ -28,6 +29,7 @@ ASSETS_DIR="assets-wp-repo"              # the name of the assets directory that
 POT_DIR="languages/"                     # name of your language file directory
 SVNUSER="sudar"                          # your svn username
 TMPDIR="/tmp"                            # temp directory path
+HISTORY_FILE="HISTORY.md"                # changelog/history file
 CURRENTDIR=`pwd`
 COMMIT_MSG_FILE='wp-plugin-commit-msg.tmp'
 
@@ -52,9 +54,10 @@ do
         -a)  ASSETS_DIR="$2"; shift;;
         -i)  I18N_PATH="$2"; shift;;
         -t)  TMPDIR="$2"; shift;;
+        -t)  HISTORY_FILE="$2"; shift;;
         -*)
             echo >&2 \
-            "usage: $0 [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n]"
+            "usage: $0 [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n] [-h history/changelog file]"
             exit 1;;
         *)  break;;	# terminate while loop
     esac
@@ -223,6 +226,7 @@ echo "[Info] Ignoring github specific files and deployment script"
 # There is no simple way to exclude readme.md. http://stackoverflow.com/q/16066485/24949
 svn propset svn:ignore "[Rr][Ee][Aa][Dd][Mm][Ee].[Mm][Dd]
 .git
+$HISTORY_FILE
 $ASSETS_DIR
 .gitignore" "$SVNPATH"
 
@@ -234,7 +238,13 @@ if [ -d $ASSETS_DIR ]; then
     rm -rf $ASSETS_DIR
 fi
 
-# Convert markdown in readme.md file to wordpress readme.txt format
+# Merge History file
+if [ -f "$HISTORY_FILE" ]; then
+    echo "[Info] Changelog file $HISTORY_FILE found. Merging it with readme file"
+    echo $HISTORY_FILE >> readme.md
+fi
+
+# Convert markdown in readme.md file to WordPress readme.txt format
 echo "[Info] Convert readme file into WordPress format"
 $README_CONVERTER readme.md readme.txt to-wp
 

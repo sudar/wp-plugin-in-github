@@ -32,7 +32,10 @@ You can use the `deploy-plugin.sh` script to deploy your Plugins to SVN repo, fr
 
 You don't need to have a copy of this script in every repo. You just need to have one copy of this script somewhere and then you can invoke it from multiple Plugin directories using the following options.
 
-`./path/to/deploy-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n]`
+```
+./path/to/deploy-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file]
+        [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n] [-h history/changelog file]
+```
 
 The following are the different options that you can pass to this script.
 
@@ -42,6 +45,7 @@ The following are the different options that you can pass to this script.
 - `-a` - The name of the Plugin's assets directory. By default it is assumed to be `assets-wp-repo`
 - `-t` - Path to the temporary directory. By default `/tmp` is used
 - `-i` - Path to the WordPress i18n tools directory. By default `../i18n` is used. You have to checkout a local copy of the i18n tools from http://i18n.svn.wordpress.org/tools/trunk/
+- `-h` - The name of the History or changelog file. By default `HISTORY.md` is used.
 
 ### Convert readme file from md to txt format and vice versa
 
