@@ -23,12 +23,17 @@ _sed() {
 	sed -E "$1" $2 > $2.tmp && mv $2.tmp $2
 }
 
-# WP to Markdown format
-wptomarkdown () {
+# Check if file exists
+file_exists () {
     if [ ! -f $1 ]; then
         echo "$1 doesn't exist"
         exit 1;
     fi
+}
+
+# WP to Markdown format
+wptomarkdown () {
+    file_exists $1
 
     cp $1 $2
 
@@ -45,10 +50,7 @@ wptomarkdown () {
 
 # Markdown to WP format
 markdowntowp () {
-    if [ ! -f $1 ]; then
-        echo "$1 doesn't exist"
-        exit 1;
-    fi
+    file_exists $1
 
     cp $1 $2
 
