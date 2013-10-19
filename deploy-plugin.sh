@@ -11,7 +11,7 @@
 # somewhere and then invoke it from multiple Plugin directories.
 #
 # Usage:
-#  ./path/to/deply-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n]
+#  ./path/to/deploy-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n]
 #
 # Refer to the README.md file for information about the different options
 #
@@ -234,7 +234,7 @@ if [ -d $ASSETS_DIR ]; then
     rm -rf $ASSETS_DIR
 fi
 
-# Convert markdown in readme.txt file to github markdown format
+# Convert markdown in readme.md file to wordpress readme.txt format
 echo "[Info] Convert readme file into WordPress format"
 $README_CONVERTER readme.md readme.txt to-wp
 
