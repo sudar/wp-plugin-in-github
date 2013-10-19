@@ -39,7 +39,7 @@ cd - > /dev/null
 I18N_PATH=$SCRIPT_DIR/../i18n
 
 # Readme converter 
-README_CONVERTOR=$SCRIPT_DIR/readme-convertor.sh
+README_CONVERTER=$SCRIPT_DIR/readme-converter.sh
 
 # lifted this code from http://www.shelldorado.com/goodcoding/cmdargs.html
 while [ $# -gt 0 ]
@@ -236,7 +236,7 @@ fi
 
 # Convert markdown in readme.txt file to github markdown format
 echo "[Info] Convert readme file into WordPress format"
-$README_CONVERTOR readme.md readme.txt to-wp
+$README_CONVERTER readme.md readme.txt to-wp
 
 # TODO: Handle screenshots as well
 # TODO: Delete files from svn that have been removed 
