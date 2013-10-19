@@ -6,15 +6,15 @@
 #
 # License: Beerware ;)
 #
-# You should invoke this script from the Plugin directory, but you don't need 
-# to copy this script to every Plugin directory. You can just have one copy 
+# You should invoke this script from the Plugin directory, but you don't need
+# to copy this script to every Plugin directory. You can just have one copy
 # somewhere and then invoke it from multiple Plugin directories.
 #
 # Usage:
 #  ./path/to/deply-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n]
 #
 # Refer to the README.md file for information about the different options
-# 
+#
 # Credit: Uses most of the code from the following places
 #       https://github.com/deanc/wordpress-plugin-git-svn
 #       https://github.com/thenbrent/multisite-user-management/blob/master/deploy.sh
@@ -38,7 +38,7 @@ cd - > /dev/null
 # WordPress i18n path. You can check it out from http://i18n.svn.wordpress.org/tools/trunk/
 I18N_PATH=$SCRIPT_DIR/../i18n
 
-# Readme converter 
+# Readme converter
 README_CONVERTER=$SCRIPT_DIR/readme-converter.sh
 
 # lifted this code from http://www.shelldorado.com/goodcoding/cmdargs.html
@@ -72,11 +72,11 @@ cd $GITPATH
 
 # Let's begin...
 echo ".........................................."
-echo 
+echo
 echo "Preparing to deploy WordPress Plugin"
-echo 
+echo
 echo ".........................................."
-echo 
+echo
 
 # Pull the latest changes from origin, to make sure we are using the latest code
 git pull origin master
@@ -99,9 +99,9 @@ if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Version in readme.txt/md & $
 echo "[Info] Versions match in readme.txt/md and $MAINFILE. Let's proceed..."
 
 if git show-ref --tags --quiet --verify -- "refs/tags/$NEWVERSION1"
-	then 
-		echo "Version $NEWVERSION1 already exists as git tag. Exiting...."; 
-		exit 1; 
+	then
+		echo "Version $NEWVERSION1 already exists as git tag. Exiting....";
+		exit 1;
 	else
 		echo "[Info] Git version does not exist. Let's proceed..."
 fi
@@ -118,11 +118,11 @@ fi
 # Retrieve commit messages till the last tag
 git log `git describe --tags --abbrev=0`..HEAD --oneline > $TMPDIR/$COMMIT_MSG_FILE
 
-echo 
+echo
 # the text domain used for translation
 TEXTDOMAIN=`awk -F' ' '/^Text Domain:/{print $NF}' $GITPATH/$MAINFILE | tr -d '\r'`
 if [ -z "$TEXTDOMAIN" ]; then
-    TEXTDOMAIN="$PLUGINSLUG"                 
+    TEXTDOMAIN="$PLUGINSLUG"
     echo "[Info] Text Domain not found in $MAINFILE. Assuming the '$PLUGINSLUG' as Text Domain"
 else
     echo "[Info] Text Domain found in $MAINFILE: $TEXTDOMAIN"
@@ -131,7 +131,7 @@ fi
 # The path the pot file has to be stored
 POT_FILEPATH=`awk -F' ' '/^Domain Path:/{print $NF}' $GITPATH/$MAINFILE | tr -d '\r'`
 if [ -z "$POT_FILEPATH" ]; then
-    POT_FILEPATH="languages/"                
+    POT_FILEPATH="languages/"
     echo "[Info] Text Domain path not found in $MAINFILE. Assuming the '$POT_FILEPATH' as path"
 else
     echo "[Info] Text Domain path found in $MAINFILE: '$POT_FILEPATH'"
@@ -159,8 +159,8 @@ if ! git diff-index --quiet HEAD --; then
     git commit -am "$POT_COMMIT_MSG"
 fi
 
-echo 
-# Tag new version 
+echo
+# Tag new version
 echo "[Info] Tagging new version in git with $NEWVERSION1"
 git tag -a "$NEWVERSION1" -m "Tagging version $NEWVERSION1"
 
@@ -169,7 +169,7 @@ echo "[Info] Pushing latest commit to origin, with tags"
 git push origin master
 git push origin master --tags
 
-echo 
+echo
 # Process /assets directory
 if [ -d $GITPATH/$ASSETS_DIR ]; then
     echo "[Info] Assets directory found. Processing it."
@@ -179,7 +179,7 @@ if [ -d $GITPATH/$ASSETS_DIR ]; then
     else
         echo "[Info] Assets directory is not found in SVN. Creating it."
         # /assets directory is not found in SVN, so let's create it.
-        # Create the assets directory and check-in. 
+        # Create the assets directory and check-in.
         # I am doing this for the first time, so that we don't have to checkout the entire Plugin directory, every time we run this script.
         # Since it takes lot of time, especially if the Plugin has lot of tags
         svn checkout $SVNURL $TMPDIR/$PLUGINSLUG
@@ -212,7 +212,7 @@ else
     echo "[Info] No assets directory found."
 fi
 
-echo 
+echo
 echo "[Info] Creating local copy of SVN repo ..."
 svn co $SVNURL/trunk $SVNPATH
 
@@ -239,7 +239,7 @@ echo "[Info] Convert readme file into WordPress format"
 $README_CONVERTER readme.md readme.txt to-wp
 
 # TODO: Handle screenshots as well
-# TODO: Delete files from svn that have been removed 
+# TODO: Delete files from svn that have been removed
 
 # Add all new files that are not set to be ignored
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" && svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add

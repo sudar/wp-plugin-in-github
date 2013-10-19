@@ -6,15 +6,15 @@
 #
 # License: Beerware ;)
 #
-# You should invoke this script from the Plugin directory, but you don't need 
-# to copy this script to every Plugin directory. You can just have one copy 
+# You should invoke this script from the Plugin directory, but you don't need
+# to copy this script to every Plugin directory. You can just have one copy
 # somewhere and then invoke it from multiple Plugin directories.
 #
 # Usage:
 #  ./path/to/create-archive.sh [-p plugin-name] [-o output-dir]
 #
 # Refer to the README.md file for information about the different options
-# 
+#
 ################################################################################
 OUTPUT_DIR="$HOME/Downloads"
 PLUGIN_NAME=${PWD##*/}

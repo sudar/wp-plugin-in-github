@@ -26,7 +26,7 @@ PLUGIN_NAME="posts-by-tag"
 AUTHORS_FILE="$SCRIPT_DIR/authors.txt"
 SVN_USERNAME="sudar"
 
-# Readme converter 
+# Readme converter
 README_CONVERTER=$SCRIPT_DIR/readme-converter.sh
 
 # lifted this code from http://www.shelldorado.com/goodcoding/cmdargs.html

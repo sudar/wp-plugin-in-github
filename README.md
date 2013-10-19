@@ -55,7 +55,7 @@ The following are the different options that you can pass to this script.
 - The second parameter is the path to the output file
 - The third parameter specifies the format. You can use one of the following two.
     - `to-wp` - convert from Github markdown format to WordPress Plugin Readme format
-    - `from-wp` - convert from WordPress Plugin Readme format to Github markdown format 
+    - `from-wp` - convert from WordPress Plugin Readme format to Github markdown format
 
 ### Creating a zip archive of the Plugin
 
@@ -77,7 +77,7 @@ Contribution
 -------------
 All contributions (even documentations) are welcome :)
 
-If you would like to contribute to this project, then just fork it in github and send a pull request. 
+If you would like to contribute to this project, then just fork it in github and send a pull request.
 
 If you are looking for ideas, then you can start with the below TODO list.
 
