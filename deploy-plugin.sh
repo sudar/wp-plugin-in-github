@@ -25,6 +25,7 @@
 PLUGINSLUG=${PWD##*/}                    # The name of the Plugin. By default the directory name is used
 MAINFILE="$PLUGINSLUG.php"               # this should be the name of your main php file in the WordPress Plugin
 ASSETS_DIR="assets-wp-repo"              # the name of the assets directory that you are using
+POT_DIR="languages/"                     # name of your language file directory
 SVNUSER="sudar"                          # your svn username
 TMPDIR="/tmp"                            # temp directory path
 CURRENTDIR=`pwd`
@@ -129,12 +130,11 @@ else
 fi
 
 # The path the pot file has to be stored
-POT_FILEPATH=`awk -F' ' '/^Domain Path:/{print $NF}' $GITPATH/$MAINFILE | tr -d '\r'`
-if [ -z "$POT_FILEPATH" ]; then
-    POT_FILEPATH="languages/"
-    echo "[Info] Text Domain path not found in $MAINFILE. Assuming the '$POT_FILEPATH' as path"
+POT_DIR=`awk -F' ' '/^Domain Path:/{print $NF}' $GITPATH/$MAINFILE | tr -d '\r'`
+if [ -z "$POT_DIR" ]; then
+    echo "[Info] Text Domain path not found in $MAINFILE. Assuming the '$POT_DIR' as path"
 else
-    echo "[Info] Text Domain path found in $MAINFILE: '$POT_FILEPATH'"
+    echo "[Info] Text Domain path found in $MAINFILE: '$POT_DIR'"
 fi
 
 # Add textdomain to all php files
@@ -143,7 +143,7 @@ find . -iname "*.php" -type f -print0 | xargs -0 -n1 php $I18N_PATH/add-textdoma
 
 # Regenerate pot file
 echo "[Info] Regenerating pot file"
-php $I18N_PATH/makepot.php wp-plugin . ${POT_FILEPATH}${TEXTDOMAIN}.pot
+php $I18N_PATH/makepot.php wp-plugin . ${POT_DIR}${TEXTDOMAIN}.pot
 
 # commit .pot file and textdomain changes
 DEFAULT_POT_COMMIT_MSG="Regenerate pot file for v$NEWVERSION1" # Default commit msg after generating a new pot file
