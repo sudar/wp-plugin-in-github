@@ -7,7 +7,7 @@ Make sure you have `git-svn` installed. In Ubuntu you can do `sudo apt-get insta
 
 - clone-from-svn-to-git.sh - Use this script to clone your WordPress Plugins from SVN into git/github
 - deploy-plugin.sh - Use this script to push your WordPress Plugin updates to SVN from git/github
-- readme-convertor.sh - Use this script to convert readme files between Github markdown and WordPress repo markdown format
+- readme-converter.sh - Use this script to convert readme files between Github markdown and WordPress repo markdown format
 - create-archive.sh - Use this script to create a zip archive of the Plugin
 
 Usage
@@ -45,9 +45,9 @@ The following are the different options that you can pass to this script.
 
 ### Convert readme file from md to txt format and vice versa
 
-You can use the `readme-convertor.sh` script to convert the readme file between WordPress Plugin format and github markdown format. The `deploy-script.sh` script automatically does the conversion by using this script.
+You can use the `readme-converter.sh` script to convert the readme file between WordPress Plugin format and github markdown format. The `deploy-script.sh` script automatically does the conversion by using this script.
 
-`./path/to/readme-convertor.sh [from-file] [to-file] [format to-wp|from-wp]`
+`./path/to/readme-converter.sh [from-file] [to-file] [format to-wp|from-wp]`
 
 The following are the different options that you can pass to this script.
 
@@ -82,7 +82,7 @@ If you would like to contribute to this project, then just fork it in github and
 If you are looking for ideas, then you can start with the below TODO list.
 
 TODO
--------------
+----
 
 Here is the list of things that I want to implement. Pull requests are welcome :)
 
