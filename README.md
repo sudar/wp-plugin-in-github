@@ -1,12 +1,12 @@
 What is this?
 =============
 
-Collection of bash scripts that I am using to manage and deploy my [WordPress Plugins](http://sudarmuthu.com/wordpress) from github into WordPress official repository svn.
+Collection of bash scripts that I am using to manage and deploy my [WordPress Plugins](http://sudarmuthu.com/wordpress) from GitHub into WordPress official repository svn.
 
 Make sure you have `git-svn` installed. In Ubuntu you can do `sudo apt-get install git-svn`
 
 - clone-from-svn-to-git.sh - Use this script to clone your WordPress Plugins from SVN into git/github
-- deploy-plugin.sh - Use this script to push your WordPress Plugin updates to SVN from gi/github
+- deploy-plugin.sh - Use this script to push your WordPress Plugin updates to SVN from git/github
 - readme-convertor.sh - Use this script to convert readme files between Github markdown and WordPress repo markdown format
 - create-archive.sh - Use this script to create a zip archive of the Plugin
 
@@ -32,7 +32,7 @@ You can use the `deploy-plugin.sh` script to deploy your Plugins to SVN repo, fr
 
 You don't need to have a copy of this script in every repo. You just need to have one copy of this script somewhere and then you can invoke it from multiple Plugin directories using the following options.
 
-`./path/to/deply-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n]`
+`./path/to/deploy-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n]`
 
 The following are the different options that you can pass to this script.
 
@@ -45,7 +45,7 @@ The following are the different options that you can pass to this script.
 
 ### Convert readme file from md to txt format and vice versa
 
-You can use the `readme-convertor.sh` script to convert the readme file between WordPress Plugin format and github makrdown format. The `deploy-script.sh` script automatically does the conversion by using this script.
+You can use the `readme-convertor.sh` script to convert the readme file between WordPress Plugin format and github markdown format. The `deploy-script.sh` script automatically does the conversion by using this script.
 
 `./path/to/readme-convertor.sh [from-file] [to-file] [format to-wp|from-wp]`
 
@@ -55,7 +55,7 @@ The following are the different options that you can pass to this script.
 - The second parameter is the path to the output file
 - The third parameter specifies the format. You can use one of the following two.
     - `to-wp` - convert from Github markdown format to WordPress Plugin Readme format
-    - `from-wp` - convert from WordPress Plugin Readme format to Github markdown format 
+    - `from-wp` - convert from WordPress Plugin Readme format to Github markdown format
 
 ### Creating a zip archive of the Plugin
 
@@ -75,9 +75,9 @@ The code is pretty stable and I currently use these script for deploying my [Wor
 
 Contribution
 -------------
-All contributions (even documentations) are welcome :)
+All contributions (even documentation) are welcome :)
 
-If you would like to contribute to this project, then just fork it in github and send a pull request. 
+If you would like to contribute to this project, then just fork it in github and send a pull request.
 
 If you are looking for ideas, then you can start with the below TODO list.
 

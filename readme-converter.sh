@@ -9,7 +9,7 @@
 # License: Beerware ;)
 #
 # Usage:
-# ./path/to/readme-convertor.sh [from-file] [to-file] [format to-wp|from-wp]
+# ./path/to/readme-converter.sh [from-file] [to-file] [format to-wp|from-wp]
 #
 # Refer to the README.md file for information about the different options
 #
