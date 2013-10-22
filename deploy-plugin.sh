@@ -30,6 +30,9 @@ POT_DIR="languages/"                     # name of your language file directory
 SVNUSER="sudar"                          # your svn username
 TMPDIR="/tmp"                            # temp directory path
 HISTORY_FILE="HISTORY.md"                # changelog/history file
+TMP_ADDON_DIR="tmp_addon"                # Temp folder where addon files will be stored
+EXTRA_FILES="../$PLUGINSLUG-*"           # Path to extra addon files
+PROCESS_EXTRA_FILES=false                # Whether to process extra files or not
 CURRENTDIR=`pwd`
 COMMIT_MSG_FILE='wp-plugin-commit-msg.tmp'
 
@@ -55,6 +58,7 @@ do
         -i)  I18N_PATH="$2"; shift;;
         -t)  TMPDIR="$2"; shift;;
         -t)  HISTORY_FILE="$2"; shift;;
+        -x)  PROCESS_EXTRA_FILES=true; shift;;     # Handle additional extra addon files. This is very specific to my usecase. You may not need it.
         -*)
             echo >&2 \
             "usage: $0 [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n] [-h history/changelog file]"
@@ -140,6 +144,19 @@ else
     echo "[Info] Text Domain path found in $MAINFILE: '$POT_DIR'"
 fi
 
+# Copy extra files (from addons) so that they can be used for generating .pot file
+if $PROCESS_EXTRA_FILES ; then
+    if [ -d $GITPATH/$TMP_ADDON_DIR ]; then
+        echo "[Error] Extra files can't be processed if we have directory named $TMP_ADDON_DIR"
+        exit 1;
+    fi
+
+    mkdir $TMP_ADDON_DIR
+
+    echo "[Info] Copying all extra files from $EXTRA_FILES to '$TMP_ADDON_DIR'"
+    find $EXTRA_FILES -iname "*.php" -exec cp {} $TMP_ADDON_DIR \;
+fi
+
 # Add textdomain to all php files
 echo "[Info] Adding text domain to all PHP files"
 find . -iname "*.php" -type f -print0 | xargs -0 -n1 php $I18N_PATH/add-textdomain.php -i $TEXTDOMAIN
@@ -147,6 +164,12 @@ find . -iname "*.php" -type f -print0 | xargs -0 -n1 php $I18N_PATH/add-textdoma
 # Regenerate pot file
 echo "[Info] Regenerating pot file"
 php $I18N_PATH/makepot.php wp-plugin . ${POT_DIR}${TEXTDOMAIN}.pot
+
+# Delete extra files
+if $PROCESS_EXTRA_FILES ; then
+    rm -rf $TMP_ADDON_DIR
+    echo "[Info] Removed $TMP_ADDON_DIR folder"
+fi
 
 # commit .pot file and textdomain changes
 DEFAULT_POT_COMMIT_MSG="Regenerate pot file for v$NEWVERSION1" # Default commit msg after generating a new pot file
