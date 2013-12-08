@@ -174,7 +174,7 @@ fi
 # commit .pot file and textdomain changes
 DEFAULT_POT_COMMIT_MSG="Regenerate pot file for v$NEWVERSION1" # Default commit msg after generating a new pot file
 if ! git diff-index --quiet HEAD --; then
-    echo "[Info] Textdomain/.pot file changes found. Committing them to git"
+    echo "[Info] Changes found, committing them to git"
     echo -e "Enter a commit message (Default: $DEFAULT_POT_COMMIT_MSG) : \c"
     read POT_COMMIT_MSG
 
