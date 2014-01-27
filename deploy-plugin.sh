@@ -159,13 +159,16 @@ if $PROCESS_EXTRA_FILES ; then
     find $EXTRA_FILES -iname "*.php" -exec cp {} $TMP_ADDON_DIR \;
 fi
 
-# Add textdomain to all php files
-echo "[Info] Adding text domain to all PHP files"
-find . -iname "*.php" -type f -print0 | xargs -0 -n1 php $I18N_PATH/add-textdomain.php -i $TEXTDOMAIN
+# Do translation only if pot file is found
+if [ -f "${POT_DIR}${TEXTDOMAIN}.pot" ]; then
+    # Add textdomain to all php files
+    echo "[Info] Adding text domain to all PHP files"
+    find . -iname "*.php" -type f -print0 | xargs -0 -n1 php $I18N_PATH/add-textdomain.php -i $TEXTDOMAIN
 
-# Regenerate pot file
-echo "[Info] Regenerating pot file"
-php $I18N_PATH/makepot.php wp-plugin . ${POT_DIR}${TEXTDOMAIN}.pot
+    # Regenerate pot file
+    echo "[Info] Regenerating pot file"
+    php $I18N_PATH/makepot.php wp-plugin . ${POT_DIR}${TEXTDOMAIN}.pot
+fi
 
 # Delete extra files
 if $PROCESS_EXTRA_FILES ; then
