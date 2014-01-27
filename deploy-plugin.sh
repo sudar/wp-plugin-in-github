@@ -91,8 +91,10 @@ git pull origin master
 
 # Check version in readme.txt/md is the same as plugin file
 # if readme.md file is found, then use it
-if [ -f "$GITPATH/readme.md" ]; then
-    NEWVERSION1=`awk -F' ' '/Stable tag:/{print $3}' $GITPATH/readme.md | tr -d '\r '`
+README_MD=`find . -iname "readme.md"`
+if [ -f "$README_MD" ]; then
+    echo "[Info] README.md file found: $README_MD"
+    NEWVERSION1=`awk -F' ' '/Stable tag:/{print $3}' $README_MD | tr -d '\r '`
 else
     NEWVERSION1=`awk -F' ' '/Stable tag:/{print $3}' $GITPATH/readme.txt | tr -d '\r '`
 fi
@@ -262,14 +264,16 @@ if [ -d $ASSETS_DIR ]; then
 fi
 
 # Merge History file
-if [ -f "$HISTORY_FILE" ]; then
+if [ -f "$README_MD" ] && [ -f "$HISTORY_FILE" ]; then
     echo "[Info] Changelog file $HISTORY_FILE found. Merging it with readme file"
-    echo $HISTORY_FILE >> readme.md
+    cat $HISTORY_FILE >> $README_MD
 fi
 
 # Convert markdown in readme.md file to WordPress readme.txt format
-echo "[Info] Convert readme file into WordPress format"
-$README_CONVERTER readme.md readme.txt to-wp
+if [ -f "$README_MD" ]; then
+    echo "[Info] Convert readme file into WordPress format"
+    $README_CONVERTER $README_MD readme.txt to-wp
+fi
 
 # TODO: Delete files from svn that have been removed
 
