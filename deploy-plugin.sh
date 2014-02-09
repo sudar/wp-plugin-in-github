@@ -101,7 +101,7 @@ fi
 
 echo "[Info] readme.txt/md version: $NEWVERSION1"
 
-NEWVERSION2=`awk -F' ' '/^Version:/{print $NF}' $GITPATH/$MAINFILE | tr -d '\r'`
+NEWVERSION2=`awk -F': ' '/^.*Version.*/{print $2}' $GITPATH/$MAINFILE | tr -d '\r'`
 echo "[Info] $MAINFILE version: $NEWVERSION2"
 
 if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Version in readme.txt/md & $MAINFILE don't match. Exiting...."; exit 1; fi
@@ -130,7 +130,7 @@ git log `git describe --tags --abbrev=0`..HEAD --oneline > $TMPDIR/$COMMIT_MSG_F
 
 echo
 # the text domain used for translation
-TEXTDOMAIN=`awk -F' ' '/^Text Domain:/{print $NF}' $GITPATH/$MAINFILE | tr -d '\r'`
+TEXTDOMAIN=`awk -F': ' '/^.*Text Domain.*/{print $2}' $GITPATH/$MAINFILE | tr -d '\r'`
 if [ -z "$TEXTDOMAIN" ]; then
     TEXTDOMAIN="$PLUGINSLUG"
     echo "[Info] Text Domain not found in $MAINFILE. Assuming the '$PLUGINSLUG' as Text Domain"
@@ -139,7 +139,7 @@ else
 fi
 
 # The path the pot file has to be stored
-POT_DIR=`awk -F' ' '/^Domain Path:/{print $NF}' $GITPATH/$MAINFILE | tr -d '\r'`
+POT_DIR=`awk -F': ' '/^.*Domain Path.*/{print $2}' $GITPATH/$MAINFILE | tr -d '\r'`
 if [ -z "$POT_DIR" ]; then
     echo "[Info] Text Domain path not found in $MAINFILE. Assuming the '$POT_DIR' as path"
 else
