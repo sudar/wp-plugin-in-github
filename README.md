@@ -9,6 +9,7 @@ Make sure you have `git-svn` installed. In Ubuntu you can do `sudo apt-get insta
 - deploy-plugin.sh - Use this script to push your WordPress Plugin updates to SVN from git/github
 - readme-converter.sh - Use this script to convert readme files between Github markdown and WordPress repo markdown format
 - create-archive.sh - Use this script to create a zip archive of the Plugin
+- update-version.sh - Use this script to update version string in all the files of the Plugin
 
 Usage
 -------------
@@ -74,6 +75,17 @@ The following are the different options that you can pass to this script.
 - `-p` - The name of the Plugin. The script can pick it up from the current directory name
 - `-o` - Path to the output directory, where the zip file should be created
 
+### Update version string of the Plugin
+
+You can use the `update-version.sh` script to quickly update the version string of all the files of the Plugin.
+
+`./path/to/update-version.sh [old_version] [new_version]`
+
+The following are the different options that you can pass to this script.
+
+- `old_version` - Old version string. This string should be escaped. eg: 1\.2\.3 and not 1.2.3
+- `new_version` - New version string. You don't have to escape this
+
 Code Quality Status
 -------------------
 
@@ -95,6 +107,7 @@ Here is the list of things that I want to implement. Pull requests are welcome :
 - Delete files from svn that have been removed in the directory
 - Find ways to speed up things in the clone script
 - Add batch support in the clone script
+- Provide an option to specify the list of files that should be ignored while replacing version string
 - <del>Ability to automatically show screenshots</del>
 - <del>Ability to auto update and generate .pot files</del>
 - <del>In the deploy script, add support for assets/ folder</del>
