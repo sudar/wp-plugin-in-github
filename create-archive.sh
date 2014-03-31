@@ -19,6 +19,16 @@
 OUTPUT_DIR="$HOME/Downloads"
 PLUGIN_NAME=${PWD##*/}
 
+# Get the directory in which this shell script is present
+cd $(dirname "${0}") > /dev/null
+SCRIPT_DIR=$(pwd -L)
+cd - > /dev/null
+
+# Readme converter
+README_CONVERTER=$SCRIPT_DIR/readme-converter.sh
+
+README_MD=`find . -iname "readme.md"`
+
 # lifted this code from http://www.shelldorado.com/goodcoding/cmdargs.html
 while [ $# -gt 0 ]
 do
@@ -43,6 +53,17 @@ else
     LATEST_TAG=""
 fi
 
+# Convert markdown in readme.md file to WordPress readme.txt format
+if [ -f "$README_MD" ]; then
+    echo "[Info] Convert readme file into WordPress format"
+    $README_CONVERTER $README_MD readme.txt to-wp
+fi
+
 git archive --format zip --prefix $PLUGIN_NAME/ --output $OUTPUT_DIR/${PLUGIN_NAME}${LATEST_TAG}.zip master
+
+zip -d $OUTPUT_DIR/${PLUGIN_NAME}${LATEST_TAG}.zip ${PLUGIN_NAME}/README.md
+cd ../
+zip $OUTPUT_DIR/${PLUGIN_NAME}${LATEST_TAG}.zip ${PLUGIN_NAME}/readme.txt
+rm ${PLUGIN_NAME}/readme.txt
 
 echo "[Info] Zip file created at $OUTPUT_DIR/${PLUGIN_NAME}${LATEST_TAG}.zip"
