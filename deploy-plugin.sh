@@ -57,7 +57,7 @@ do
         -a)  ASSETS_DIR="$2"; shift;;
         -i)  I18N_PATH="$2"; shift;;
         -t)  TMPDIR="$2"; shift;;
-        -t)  HISTORY_FILE="$2"; shift;;
+        -h)  HISTORY_FILE="$2"; shift;;
         -x)  PROCESS_EXTRA_FILES=true; shift;;     # Handle additional extra addon files. This is very specific to my usecase. You may not need it.
         -*)
             echo >&2 \
