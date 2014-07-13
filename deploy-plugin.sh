@@ -91,7 +91,7 @@ git pull origin master
 
 # Check version in readme.txt/md is the same as plugin file
 # if readme.md file is found, then use it
-README_MD=`find . -iname "readme.md"`
+README_MD=`find . -maxdepth 1 -iname "readme.md"`
 if [ -f "$README_MD" ]; then
     echo "[Info] README.md file found: $README_MD"
     NEWVERSION1=`awk -F' ' '/Stable tag:/{print $3}' $README_MD | tr -d '\r '`
