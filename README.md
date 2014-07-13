@@ -104,10 +104,11 @@ TODO
 
 Here is the list of things that I want to implement. Pull requests are welcome :)
 
+- If a repo has git submodules then the files from submodules are not getting included in the svn check-in
 - Delete files from svn that have been removed in the directory
+- Provide an option to specify the list of files that should be ignored while replacing version string
 - Find ways to speed up things in the clone script
 - Add batch support in the clone script
-- Provide an option to specify the list of files that should be ignored while replacing version string
 - <del>Ability to automatically show screenshots</del>
 - <del>Ability to auto update and generate .pot files</del>
 - <del>In the deploy script, add support for assets/ folder</del>
