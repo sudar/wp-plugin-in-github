@@ -11,6 +11,22 @@ Make sure you have `git-svn` installed. In Ubuntu you can do `sudo apt-get insta
 - create-archive.sh - Use this script to create a zip archive of the Plugin
 - update-version.sh - Use this script to update version string in all the files of the Plugin
 
+Installation
+-------------
+
+There are two ways by which you can install the scripts.
+
+- Clone the git repo to your local machine and then add the path to the repo to your `PATH` variable (or)
+- Execute the following commands in your terminal
+
+```
+cd /tmp
+git clone https://github.com/sudar/wp-plugin-in-github
+chmod +x ./wp-plugin-in-github/*.sh
+mv ./wp-plugin-in-github/*.sh /usr/local/bin/
+rm -r ./wp-plugin-in-github
+```
+
 Usage
 -------------
 
