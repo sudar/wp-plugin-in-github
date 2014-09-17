@@ -278,6 +278,9 @@ if [ -f "$README_MD" ]; then
     $README_CONVERTER $README_MD readme.txt to-wp
 fi
 
+# TODO: Allow users to specify list of files to exclude.
+# TODO: Include files that are specified in git submodule.
+
 # TODO: Delete files from svn that have been removed
 
 # Add all new files that are not set to be ignored

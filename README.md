@@ -104,9 +104,10 @@ TODO
 
 Here is the list of things that I want to implement. Pull requests are welcome :)
 
-- If a repo has git submodules then the files from submodules are not getting included in the svn check-in
-- Delete files from svn that have been removed in the directory
-- Provide an option to specify the list of files that should be ignored while replacing version string
+- Add an option to exclude certain files/folders from svn ([issue #20](https://github.com/sudar/wp-plugin-in-github/issues/20))
+- If a repo has git submodules then the files from submodules are not getting included in the svn check-in ([issue #17](https://github.com/sudar/wp-plugin-in-github/issues/17))
+- Delete files from svn that have been removed from git ([issue #8](https://github.com/sudar/wp-plugin-in-github/issues/8))
+- Provide an option to specify the list of files that should be ignored while replacing version string ([issue #14](https://github.com/sudar/wp-plugin-in-github/issues/14))
 - Find ways to speed up things in the clone script
 - Add batch support in the clone script
 - <del>Ability to automatically show screenshots</del>
