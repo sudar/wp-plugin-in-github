@@ -74,7 +74,7 @@ GITPATH="$CURRENTDIR"
 # svn config
 SVNPATH="$TMPDIR/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
 SVNPATH_ASSETS="$TMPDIR/$PLUGINSLUG-assets" # path to a temp assets directory.
-SVNURL="http://plugins.svn.wordpress.org/$PLUGINSLUG/" # Remote SVN repo on wordpress.org
+SVNURL="https://plugins.svn.wordpress.org/$PLUGINSLUG" # Remote SVN repo on wordpress.org
 
 cd $GITPATH
 
@@ -213,7 +213,7 @@ if [ -d $GITPATH/$ASSETS_DIR ]; then
         # Create the assets directory and check-in.
         # I am doing this for the first time, so that we don't have to checkout the entire Plugin directory, every time we run this script.
         # Since it takes lot of time, especially if the Plugin has lot of tags
-        svn checkout $SVNURL $TMPDIR/$PLUGINSLUG
+        svn checkout $SVNURL/ $TMPDIR/$PLUGINSLUG
         cd $TMPDIR/$PLUGINSLUG
         mkdir assets
         svn add assets
