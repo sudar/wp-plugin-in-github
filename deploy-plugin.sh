@@ -289,20 +289,26 @@ fi
 
 # TODO: Allow users to specify list of files to exclude.
 # TODO: Include files that are specified in git submodule.
-
 # TODO: Delete files from svn that have been removed
 
 # Add all new files that are not set to be ignored
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" && svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
 
 # Get aggregated commit msg and add comma in between them
-COMMIT_MSG=`cut -d' ' -f2- $TMPDIR/$COMMIT_MSG_FILE | sed -e '$ ! s/$/,/'`
+COMPUTED_COMMIT_MSG=`cut -d' ' -f2- $TMPDIR/$COMMIT_MSG_FILE | sed -e '$ ! s/$/,/'`
 rm $TMPDIR/$COMMIT_MSG_FILE
 
-if [ -z "$COMMIT_MSG" ]; then
+if [ -z "$COMPUTED_COMMIT_MSG" ]; then
     echo "[Info] Couldn't automatically get commit message."
     echo -e "Enter a commit message : \c"
     read COMMIT_MSG
+else
+    echo -e "Enter a commit message (Default: $COMPUTED_COMMIT_MSG) : \c"
+    read COMMIT_MSG
+fi
+
+if [ -z "$COMPUTED_COMMIT_MSG" ]; then
+    COMMIT_MSG=$COMPUTED_COMMIT_MSG
 fi
 
 svn commit --username=$SVNUSER -m "$COMMIT_MSG"
