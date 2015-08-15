@@ -110,6 +110,7 @@ markdowntowp () {
     _sed "s/###([^#]+)###/=\1=/g" $2
     _sed "s/##([^#]+)##/==\1==/g" $2
     _sed "s/#([^#]+)#/===\1===/g" $2
+    _sed "/scrutinizer-ci/d" $2  # ignore links that contain scrutinizer-ci
 }
 
 if [ $# -eq 3 ]; then
