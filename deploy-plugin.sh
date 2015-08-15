@@ -33,6 +33,7 @@ HISTORY_FILE="HISTORY.md"                # changelog/history file
 TMP_ADDON_DIR="tmp_addon"                # Temp folder where addon files will be stored
 EXTRA_FILES="../$PLUGINSLUG-*"           # Path to extra addon files
 PROCESS_EXTRA_FILES=false                # Whether to process extra files or not
+PROCESS_GRUNT=false                      # Whether to process grunt
 CURRENTDIR=`pwd`
 COMMIT_MSG_FILE='wp-plugin-commit-msg.tmp'
 
@@ -58,12 +59,13 @@ do
         -i)  I18N_PATH="$2"; shift;;
         -t)  TMPDIR="$2"; shift;;
         -h)  HISTORY_FILE="$2"; shift;;
-        -x)  PROCESS_EXTRA_FILES=true; shift;;     # Handle additional extra addon files. This is very specific to my usecase. You may not need it.
+        -x)  PROCESS_EXTRA_FILES=true;;     # Handle additional extra addon files. This is very specific to my usecase. You may not need it.
+        -g)  PROCESS_GRUNT=true;;           # Handle Grunt. This is very specific to my usecase. You may not need it.
         -*)
             echo >&2 \
             "usage: $0 [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n] [-h history/changelog file]"
             exit 1;;
-        *)  break;;	# terminate while loop
+        *)  break;; # terminate while loop
     esac
     shift
 done
@@ -247,8 +249,15 @@ echo
 echo "[Info] Creating local copy of SVN repo ..."
 svn co $SVNURL/trunk $SVNPATH
 
-echo "[Info] Exporting the HEAD of master from git to the trunk of SVN"
-git checkout-index -a -f --prefix=$SVNPATH/
+if $PROCESS_GRUNT ; then
+    echo "[Info] Processing Grunt"
+    grunt build
+    echo "[Info] Copying dist folder to svn"
+    cp -R dist/ $SVNPATH
+else
+    echo "[Info] Exporting the HEAD of master from git to the trunk of SVN"
+    git checkout-index -a -f --prefix=$SVNPATH/
+fi
 
 echo "[Info] Ignoring github specific files and deployment script"
 # There is no simple way to exclude readme.md. http://stackoverflow.com/q/16066485/24949
