@@ -165,7 +165,7 @@ fi
 if [ -f "${POT_DIR}${TEXTDOMAIN}.pot" ]; then
     # Add textdomain to all php files
     echo "[Info] Adding text domain to all PHP files"
-    find . -iname "*.php" -type f -print0 | xargs -0 -n1 php $I18N_PATH/add-textdomain.php -i $TEXTDOMAIN
+    find . -iname "*.php" ! -path '*vendor*' ! -path '*dist*' ! -path '*tests*' ! -path '*libraries*' -type f -print0 | xargs -0 -n1 php $I18N_PATH/add-textdomain.php -i $TEXTDOMAIN
 
     # Regenerate pot file
     echo "[Info] Regenerating pot file"
