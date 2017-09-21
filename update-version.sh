@@ -32,7 +32,7 @@
 #       $2 - new version (String to be replaced with)
 
 echo "[Info] Replacing $1 with $2"
-ack --ignore-file=is:HISTORY.md --ignore-dir=languages -l --print0 "$1" | xargs -0 perl -pi -e "/\@since/ || s/$1/$2/g"
+ack --ignore-file=is:HISTORY.md --ignore-file=is:products.json --ignore-dir=languages --ignore-dir=vendor --ignore-dir=dist --ignore-dir=code-coverage -l --print0 "$1" | xargs -0 perl -pi -e "/\@since/ || s/$1/$2/g"
 
 # See the difference
 git status
