@@ -289,10 +289,12 @@ fi
 
 # TODO: Allow users to specify list of files to exclude.
 # TODO: Include files that are specified in git submodule.
-# TODO: Delete files from svn that have been removed
 
 # Add all new files that are not set to be ignored
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" && svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
+
+# Delete files from svn that have been removed
+svn st | grep ! | cut -d! -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g' | xargs -Iname svn rm name 
 
 # Get aggregated commit msg and add comma in between them
 COMPUTED_COMMIT_MSG=`cut -d' ' -f2- $TMPDIR/$COMMIT_MSG_FILE | sed -e '$ ! s/$/,/'`
