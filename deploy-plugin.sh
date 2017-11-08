@@ -221,6 +221,8 @@ if [ -d $GITPATH/$ASSETS_DIR ]; then
         svn add assets
         svn commit -m "Created the assets directory in SVN"
         rm -rf $TMPDIR/$PLUGINSLUG
+
+        cd $GITPATH
         svn checkout $SVNURL/assets $SVNPATH_ASSETS
     fi
 
