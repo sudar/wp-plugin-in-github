@@ -60,7 +60,15 @@ echo "[Info] Repo cloned. Let's fetch it"
 cd $PLUGIN_NAME
 git svn fetch
 git svn rebase --all
-echo "[Info] Fetched the content from svn. Adding repo to github"
+
+echo "[Info] svn fetched. Let's create git tags from svn tags"
+git for-each-ref refs/remotes/origin/tags | cut -d / -f 5- |
+while read ref
+do
+	git tag -a "$ref" -m"Tag $ref" "refs/remotes/origin/tags/$ref"
+done
+
+echo "[Info] Tags created. Adding repo to github"
 
 git remote add origin $GITHUB_REPO
 
