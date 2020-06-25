@@ -59,7 +59,7 @@ echo "[Info] Repo cloned. Let's fetch it"
 
 cd $PLUGIN_NAME
 git svn fetch
-git rebase trunk
+git svn rebase --all
 echo "[Info] Fetched the content from svn. Adding repo to github"
 
 git remote add origin $GITHUB_REPO
