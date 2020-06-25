@@ -54,7 +54,7 @@ fi
 REVISION=$(svn log -r 1:HEAD --limit 1 http://plugins.svn.wordpress.org/$PLUGIN_NAME | awk 'NR==2{print $1;exit;}')
 echo "[Info] Plugin was first checked in at revision: $REVISION"
 
-git svn clone -s -$REVISION -A $AUTHORS_FILE --no-minimize-url --username=$SVN_USERNAME http://plugins.svn.wordpress.org/$PLUGIN_NAME
+git svn clone -s -$REVISION -A $AUTHORS_FILE --no-minimize-url --log-window-size=10000 --username=$SVN_USERNAME http://plugins.svn.wordpress.org/$PLUGIN_NAME
 echo "[Info] Repo cloned. Let's fetch it"
 
 cd $PLUGIN_NAME
