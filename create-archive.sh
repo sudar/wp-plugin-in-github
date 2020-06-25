@@ -27,7 +27,7 @@ cd - > /dev/null
 # Readme converter
 README_CONVERTER=$SCRIPT_DIR/readme-converter.sh
 
-README_MD=`find . -iname "readme.md"`
+README_MD=`find . -iname "readme.md" -maxdepth 1`
 
 # lifted this code from http://www.shelldorado.com/goodcoding/cmdargs.html
 while [ $# -gt 0 ]
