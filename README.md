@@ -124,8 +124,8 @@ Here is the list of things that I want to implement. Pull requests are welcome :
 - If a repo has git submodules then the files from submodules are not getting included in the svn check-in ([issue #17](https://github.com/sudar/wp-plugin-in-github/issues/17))
 - Delete files from svn that have been removed from git ([issue #8](https://github.com/sudar/wp-plugin-in-github/issues/8))
 - Provide an option to specify the list of files that should be ignored while replacing version string ([issue #14](https://github.com/sudar/wp-plugin-in-github/issues/14))
-- Find ways to speed up things in the clone script
 - Add batch support in the clone script
+- <del>Find ways to speed up things in the clone script</del>
 - <del>Ability to automatically show screenshots</del>
 - <del>Ability to auto update and generate .pot files</del>
 - <del>In the deploy script, add support for assets/ folder</del>

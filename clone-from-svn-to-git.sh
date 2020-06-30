@@ -58,7 +58,7 @@ git svn clone -s -$REVISION -A $AUTHORS_FILE --no-minimize-url --log-window-size
 echo "[Info] Repo cloned. Let's fetch it"
 
 cd $PLUGIN_NAME
-git svn fetch
+git svn fetch --log-window-size=10000
 git svn rebase --all
 
 echo "[Info] svn fetched. Let's create git tags from svn tags"
