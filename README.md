@@ -1,7 +1,7 @@
 What is this?
 =============
 
-Collection of bash scripts that I am using to manage and deploy my [WordPress Plugins](http://sudarmuthu.com/wordpress) from GitHub into WordPress official repository svn.
+Collection of bash scripts that I am using to manage and deploy my [WordPress Plugins](https://sudarmuthu.com/wordpress) from GitHub into WordPress official repository svn.
 
 Make sure you have `git-svn` installed. In Ubuntu you can do `sudo apt-get install git-svn`
 
@@ -51,18 +51,21 @@ You don't need to have a copy of this script in every repo. You just need to hav
 
 ```
 ./path/to/deploy-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file]
-        [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n] [-h history/changelog file]
+        [-a assets-dir-name] [-t tmp directory] [-i make-pot-command] [-h history/changelog file]
+        [-r] [-b build-command]
 ```
 
 The following are the different options that you can pass to this script.
 
 - `-p` - The name of the Plugin. The script can pick it up from the current directory name
 - `-u` - The svn username. It is same as your WordPress Plugin repo username.
-- `-m` - The name of the main Plugin file. By default it is `plugin-name.php`
-- `-a` - The name of the Plugin's assets directory. By default it is assumed to be `assets-wp-repo`
+- `-m` - The name of the main Plugin file. By default, it is `plugin-name.php`
+- `-a` - The name of the Plugin's assets directory. By default, it is assumed to be `assets-wp-repo`
 - `-t` - Path to the temporary directory. By default `/tmp` is used
-- `-i` - Path to the WordPress i18n tools directory. By default `../i18n` is used. You have to checkout a local copy of the i18n tools from http://i18n.svn.wordpress.org/tools/trunk/
+- `-i` - Command to generate pot file.
 - `-h` - The name of the History or changelog file. By default `HISTORY.md` is used.
+- `-r` - Whether build command should be run. By default `npm run build` is called.
+- `-b` - Override build command. This command should place the final files in `/dist` directory.
 
 ### Convert readme file from md to txt format and vice versa
 

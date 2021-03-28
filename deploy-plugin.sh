@@ -12,7 +12,8 @@
 #
 # Usage:
 #  ./path/to/deploy-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file]
-#            [-a assets-dir-name] [-t tmp directory] [-i command-to-generate-pot-file] [-h history/changelog file]
+#            [-a assets-dir-name] [-t tmp directory] [-i command-to-generate-pot-file]
+#            [-r] [-b build command] [-h history/changelog file]
 #
 # Refer to the README.md file for information about the different options
 #
@@ -33,7 +34,8 @@ HISTORY_FILE="HISTORY.md"                # changelog/history file
 TMP_ADDON_DIR="tmp_addon"                # Temp folder where addon files will be stored
 EXTRA_FILES="../$PLUGINSLUG-*"           # Path to extra addon files
 PROCESS_EXTRA_FILES=false                # Whether to process extra files or not
-PROCESS_GRUNT=false                      # Whether to process grunt
+RUN_BUILD_COMMAND=false                  # Whether to run build command?
+BUILD_COMMAND="npm run build"            # Command to trigger build. This command should create a /dist directory.
 MAKEPOT_COMMAND="npm run makepot"        # Command to generate pot files
 CURRENTDIR=`pwd`
 COMMIT_MSG_FILE='wp-plugin-commit-msg.tmp'
@@ -57,11 +59,12 @@ do
         -i)  MAKEPOT_COMMAND="$2"; shift;;
         -t)  TMPDIR="$2"; shift;;
         -h)  HISTORY_FILE="$2"; shift;;
+        -b)  BUILD_COMMAND="$2"; shift;;
+        -r)  RUN_BUILD_COMMAND=true;;       # Run build command? If set, then the build command will be run.
         -x)  PROCESS_EXTRA_FILES=true;;     # Handle additional extra addon files. This is very specific to my usecase. You may not need it.
-        -g)  PROCESS_GRUNT=true;;           # Handle Grunt. This is very specific to my usecase. You may not need it.
         -*)
             echo >&2 \
-            "usage: $0 [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i command-to-generate-pot-file] [-h history/changelog file]"
+            "usage: $0 [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i command-to-generate-pot-file] [-r] [-b build-command] [-h history/changelog file]"
             exit 1;;
         *)  break;; # terminate while loop
     esac
@@ -242,9 +245,9 @@ echo
 echo "[Info] Creating local copy of SVN repo ..."
 svn co $SVNURL/trunk $SVNPATH
 
-if $PROCESS_GRUNT ; then
-    echo "[Info] Processing Grunt"
-    grunt build
+if $RUN_BUILD_COMMAND ; then
+    echo "[Info] Processing build command"
+    eval $BUILD_COMMAND
     echo "[Info] Copying dist folder to svn"
     cp -R dist/ $SVNPATH
 else
