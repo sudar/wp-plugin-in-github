@@ -12,7 +12,7 @@
 #
 # Usage:
 #  ./path/to/deploy-plugin.sh [-p plugin-name] [-u svn-username] [-m main-plugin-file]
-#            [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n] [-h history/changelog file]
+#            [-a assets-dir-name] [-t tmp directory] [-i command-to-generate-pot-file] [-h history/changelog file]
 #
 # Refer to the README.md file for information about the different options
 #
@@ -34,6 +34,7 @@ TMP_ADDON_DIR="tmp_addon"                # Temp folder where addon files will be
 EXTRA_FILES="../$PLUGINSLUG-*"           # Path to extra addon files
 PROCESS_EXTRA_FILES=false                # Whether to process extra files or not
 PROCESS_GRUNT=false                      # Whether to process grunt
+MAKEPOT_COMMAND="npm run makepot"        # Command to generate pot files
 CURRENTDIR=`pwd`
 COMMIT_MSG_FILE='wp-plugin-commit-msg.tmp'
 
@@ -41,9 +42,6 @@ COMMIT_MSG_FILE='wp-plugin-commit-msg.tmp'
 cd $(dirname "${0}") > /dev/null
 SCRIPT_DIR=$(pwd -L)
 cd - > /dev/null
-
-# WordPress i18n path. You can check it out from http://i18n.svn.wordpress.org/tools/trunk/
-I18N_PATH=$SCRIPT_DIR/../i18n
 
 # Readme converter
 README_CONVERTER=$SCRIPT_DIR/readme-converter.sh
@@ -56,14 +54,14 @@ do
         -u)  SVNUSER="$2"; shift;;
         -m)  MAINFILE="$2"; shift;;
         -a)  ASSETS_DIR="$2"; shift;;
-        -i)  I18N_PATH="$2"; shift;;
+        -i)  MAKEPOT_COMMAND="$2"; shift;;
         -t)  TMPDIR="$2"; shift;;
         -h)  HISTORY_FILE="$2"; shift;;
         -x)  PROCESS_EXTRA_FILES=true;;     # Handle additional extra addon files. This is very specific to my usecase. You may not need it.
         -g)  PROCESS_GRUNT=true;;           # Handle Grunt. This is very specific to my usecase. You may not need it.
         -*)
             echo >&2 \
-            "usage: $0 [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i path/to/i18n] [-h history/changelog file]"
+            "usage: $0 [-p plugin-name] [-u svn-username] [-m main-plugin-file] [-a assets-dir-name] [-t tmp directory] [-i command-to-generate-pot-file] [-h history/changelog file]"
             exit 1;;
         *)  break;; # terminate while loop
     esac
@@ -161,16 +159,9 @@ if $PROCESS_EXTRA_FILES ; then
     find $EXTRA_FILES -iname "*.php" -exec cp {} $TMP_ADDON_DIR \;
 fi
 
-# Do translation only if pot file is found
-if [ -f "${POT_DIR}${TEXTDOMAIN}.pot" ]; then
-    # Add textdomain to all php files
-    echo "[Info] Adding text domain to all PHP files"
-    find . -iname "*.php" ! -path '*vendor*' ! -path '*dist*' ! -path '*tests*' ! -path '*libraries*' -type f -print0 | xargs -0 -n1 php $I18N_PATH/add-textdomain.php -i $TEXTDOMAIN
-
-    # Regenerate pot file
-    echo "[Info] Regenerating pot file"
-    php $I18N_PATH/makepot.php wp-plugin . ${POT_DIR}${TEXTDOMAIN}.pot
-fi
+# Regenerate pot file
+echo "[Info] Regenerating pot file"
+eval $MAKEPOT_COMMAND
 
 # Delete extra files
 if $PROCESS_EXTRA_FILES ; then
@@ -296,7 +287,7 @@ fi
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" && svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
 
 # Delete files from svn that have been removed
-svn st | grep ! | cut -d! -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g' | xargs -Iname svn rm name 
+svn st | grep ! | cut -d! -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g' | xargs -Iname svn rm name
 
 # Get aggregated commit msg and add comma in between them
 COMPUTED_COMMIT_MSG=`cut -d' ' -f2- $TMPDIR/$COMMIT_MSG_FILE | sed -e '$ ! s/$/,/'`
