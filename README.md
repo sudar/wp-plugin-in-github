@@ -64,7 +64,7 @@ The following are the different options that you can pass to this script.
 - `-t` - Path to the temporary directory. By default `/tmp` is used
 - `-i` - Command to generate pot file.
 - `-h` - The name of the History or changelog file. By default `HISTORY.md` is used.
-- `-r` - Whether build command should be run. By default `npm run build` is called.
+- `-r` - Whether build command should be run. By default `npm run dist` is called.
 - `-b` - Override build command. This command should place the final files in `/dist` directory.
 
 ### Convert readme file from md to txt format and vice versa
